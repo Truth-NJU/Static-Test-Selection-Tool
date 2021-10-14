@@ -29,7 +29,7 @@ public class CreateTDG implements StartsConstants {
     }
 
     /**
-     * 得到每一个类的传递闭包
+     * 得到每一个待分析的类的依赖的传递闭包
      * @param graph
      * @param classesToAnalyze
      * @return transitiveClosurePerClass
