@@ -11,9 +11,6 @@ import java.util.*;
 import java.util.logging.Level;
 
 import constants.StartsConstants;
-import edu.illinois.yasgl.DirectedGraph;
-import edu.illinois.yasgl.GraphVertexVisitor;
-import util.Logger;
 
 /**
  * starts通过只读取每个类文件中的常量池来确定类文件中的类型可能依赖的所有类型，从而改进了类型之间的计算依赖关系。
@@ -21,7 +18,6 @@ import util.Logger;
  * STARTS进行单个jdeps调用(通过jdeps API)来一次解析应用程序中的所有类文件，然后在内存中处理jdeps输出，以找到每种类型的依赖项。
  */
 public final class LoadAndStartJdeps implements StartsConstants {
-    private static final Logger LOGGER = Logger.getGlobal();
     private static final String TOOLS_JAR_NAME = "tools.jar";
     private static final String CLASSES_JAR_NAME = "classes.jar";
     private static final String LIB = "lib";
@@ -136,7 +132,6 @@ public final class LoadAndStartJdeps implements StartsConstants {
      *
      * */
     public static Map<String, Set<String>> runJdeps(List<String> args) {
-        LOGGER.log(Level.FINE, "JDEPS ARGS:" + args);
 
         StringWriter output = LoadAndStartJdeps.loadAndRunJdeps(args);
 
