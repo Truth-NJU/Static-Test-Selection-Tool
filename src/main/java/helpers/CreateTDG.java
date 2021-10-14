@@ -34,14 +34,14 @@ public class CreateTDG implements StartsConstants {
      * @param classesToAnalyze
      * @return transitiveClosurePerClass
      */
-    public static Map<String, Set<String>> getTransitiveClosurePerClass(DirectedGraph<String> graph,
+    public Map<String, Set<String>> getTransitiveClosurePerClass(DirectedGraph<String> graph,
                                                                         List<String> classesToAnalyze) {
         Map<String, Set<String>> transitiveClosurePerClass = new HashMap<>();
-        for (String clazz : classesToAnalyze) {
+        for (String test : classesToAnalyze) {
             Set<String> deps = computeReachabilityFromChangedClasses(
-                    new HashSet<>(Arrays.asList(clazz)), graph);
-            deps.add(clazz);
-            transitiveClosurePerClass.put(clazz, deps);
+                    new HashSet<>(Arrays.asList(test)), graph);
+            deps.add(test);
+            transitiveClosurePerClass.put(test, deps);
         }
         return transitiveClosurePerClass;
     }
