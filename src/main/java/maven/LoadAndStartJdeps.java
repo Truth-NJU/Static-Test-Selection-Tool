@@ -11,6 +11,8 @@ import java.util.*;
 import java.util.logging.Level;
 
 import constants.StartsConstants;
+import edu.illinois.yasgl.DirectedGraph;
+import edu.illinois.yasgl.GraphVertexVisitor;
 import util.Logger;
 
 /**
@@ -18,7 +20,7 @@ import util.Logger;
  * 使用jdeps工具来读取常量池。在将应用程序的新修订编译为生成类文件之后，
  * STARTS进行单个jdeps调用(通过jdeps API)来一次解析应用程序中的所有类文件，然后在内存中处理jdeps输出，以找到每种类型的依赖项。
  */
-public final class RunAndStartJdeps implements StartsConstants {
+public final class LoadAndStartJdeps implements StartsConstants {
     private static final Logger LOGGER = Logger.getGlobal();
     private static final String TOOLS_JAR_NAME = "tools.jar";
     private static final String CLASSES_JAR_NAME = "classes.jar";
@@ -57,7 +59,11 @@ public final class RunAndStartJdeps implements StartsConstants {
     }
 
 
-    // 加载并启动jdeps
+    /**
+     *  加载并启动jdeps
+     * @param args
+     * @return StringWriter
+     */
     public static StringWriter loadAndRunJdeps(List<String> args) {
         StringWriter output = new StringWriter();
         try {
@@ -98,21 +104,26 @@ public final class RunAndStartJdeps implements StartsConstants {
         return output;
     }
 
+    /**
+     * 将jdeps的输出存放到map中
+     * @param jdepsOutput
+     * @return Map<String, Set<String>>
+     */
     public static Map<String, Set<String>> getDepsFromJdepsOutput(StringWriter jdepsOutput) {
         Map<String, Set<String>> deps = new HashMap<>();
         // 按行分割jdepsOutput
         List<String> lines = Arrays.asList(jdepsOutput.toString().split(System.lineSeparator()));
         for (String line : lines) {
             String[] parts = line.split("->");
-            String left = parts[0].trim();
-            if (left.startsWith(CLASSES) || left.startsWith(TEST_CLASSES) || left.endsWith(JAR_EXTENSION)) {
+            String clazz = parts[0].trim();
+            if (clazz.startsWith(CLASSES) || clazz.startsWith(TEST_CLASSES) || clazz.endsWith(JAR_EXTENSION)) {
                 continue;
             }
             String right = parts[1].trim().split(" ")[0];
-            if (deps.keySet().contains(left)) {
-                deps.get(left).add(right);
+            if (deps.keySet().contains(clazz)) {
+                deps.get(clazz).add(right);
             } else {
-                deps.put(left, new HashSet<>(Arrays.asList(right)));
+                deps.put(clazz, new HashSet<>(Arrays.asList(right)));
             }
         }
         return deps;
@@ -127,7 +138,7 @@ public final class RunAndStartJdeps implements StartsConstants {
     public static Map<String, Set<String>> runJdeps(List<String> args) {
         LOGGER.log(Level.FINE, "JDEPS ARGS:" + args);
 
-        StringWriter output = RunAndStartJdeps.loadAndRunJdeps(args);
+        StringWriter output = LoadAndStartJdeps.loadAndRunJdeps(args);
 
         if(output.getBuffer().length()!=0){
             return getDepsFromJdepsOutput(output);
