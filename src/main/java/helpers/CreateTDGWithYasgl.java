@@ -12,7 +12,7 @@ import java.util.*;
  * 使用yasgl自定义图形库来构造图形，并查找可以传递到某些已更改类型的测试
  * 我们将每种类型作为一个节点添加到yasgl图中，并添加由jdeps计算的依赖项作为图中节点之间的边
  */
-public class CreateTDG implements StartsConstants {
+public class CreateTDGWithYasgl implements StartsConstants {
     /**
      * 将使用jdeps得到的依赖构造成图形
      * @param deps
