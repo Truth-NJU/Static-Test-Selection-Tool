@@ -2,8 +2,8 @@ package helpers;
 
 import constants.StartsConstants;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,19 +35,26 @@ public class CheckSum implements StartsConstants {
     }
 
     /**
-     * 计算一个项目中所有类和对应校验和的映射
+     * 计算一个项目中所有类型（除去测试类）和对应校验和的映射
      * @param rootPath 项目的根路径
      */
-    public void setCheckSumMap(String rootPath) throws Exception {
+    public Map<String, Long> setCheckSumMap(String rootPath) throws Exception {
         ClassPath classPath=new ClassPath();
         Map<String,String> classPathMap=classPath.getClasspathSet(rootPath);
+        ArrayList<String> allClassNames=classPath.getAllClassName(classPathMap);
+        ArrayList<String> testClassNames= classPath.getAllTestClassesName(allClassNames);
         for (String key : classPathMap.keySet()) {
-            String value = classPathMap.get(key);
-            //测试CRC校验码
-            CheckSum checkSum=new CheckSum();
-            Long sum=checkSum.getSingleCheckSum(value);
-            checkSumMap.put(key,sum);
+            // 不是测试类才计算它的校验和
+            if(testClassNames.indexOf(key)==-1) {
+                String value = classPathMap.get(key);
+                //测试CRC校验码
+                CheckSum checkSum = new CheckSum();
+                Long sum = checkSum.getSingleCheckSum(value);
+                checkSumMap.put(key, sum);
+            }
         }
+
+        return checkSumMap;
     }
 
     /**
@@ -83,6 +90,15 @@ public class CheckSum implements StartsConstants {
 
     /**
      * 将校验和写入文件
+     * @param checkSumMap
+     * @param filename
      */
-    // 还剩下将校验和写入文件，然后比较两个文件中校验和不同的类型，并根据类型到依赖于该类型的测试的映射，选择受影响的测试。
+    public void writeCheckSumToFie( Map<String, Long> checkSumMap,String filename) throws IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+        for(String key:checkSumMap.keySet()){
+            String str=key+" "+checkSumMap.get(key)+"\n";
+            out.write(str);
+        }
+        out.close();
+    }
 }

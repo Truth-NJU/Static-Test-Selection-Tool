@@ -62,16 +62,7 @@ public class ComputeDepency {
         // 获得剩余的类型
         ArrayList<String> commonTypeClass=new ArrayList<>();
         for(int i=0;i<allClass.size();i++){
-            int temp=0;
-            for(int j=0;j<testClass.size();j++){
-                if(Objects.equals(allClass.get(i), testClass.get(j))){
-                    temp=j;
-                    break;
-                }
-            }
-            if(Objects.equals(allClass.get(i), testClass.get(temp))){
-                break;
-            }else {
+            if(testClass.indexOf(allClass.get(i))==-1){
                 commonTypeClass.add(allClass.get(i));
             }
         }

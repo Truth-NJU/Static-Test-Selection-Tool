@@ -1,7 +1,7 @@
 package helpersTest;
 
 import helpers.ComputeDepency;
-import maven.LoadAndStartJdeps;
+import helpers.LoadAndStartJdeps;
 import org.junit.Test;
 
 import java.util.*;

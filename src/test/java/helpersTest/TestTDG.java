@@ -2,7 +2,7 @@ package helpersTest;
 
 import edu.illinois.yasgl.DirectedGraph;
 import helpers.CreateTDGWithYasgl;
-import maven.LoadAndStartJdeps;
+import helpers.LoadAndStartJdeps;
 import org.junit.Test;
 
 import java.util.*;
