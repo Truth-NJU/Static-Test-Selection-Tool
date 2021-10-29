@@ -1,4 +1,4 @@
-# Static-Test-Selection-Tool
+# Static-Test-Selection-Tool:STARTS
 复现静态测试选择工具STARTS，STARTS是一个类级的静态回归测试用例选择工具。
 
 ## 基础知识
