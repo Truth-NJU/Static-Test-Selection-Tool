@@ -17,6 +17,7 @@ public class ImpactedTest {
     // 被删除的类型
     private ArrayList<String> deleteType = new ArrayList<>();
 
+
     /**
      * 比较新旧校验和文件，找出已更改的的类型
      *

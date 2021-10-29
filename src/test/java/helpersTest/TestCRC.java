@@ -1,6 +1,5 @@
 package helpersTest;
 
-import helpers.ClassPath;
 import org.junit.Test;
 import helpers.CheckSum;
 
@@ -31,6 +30,6 @@ public class TestCRC {
         CheckSum checkSum=new CheckSum();
         String path="/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01/src";
         Map<String, Long> resMap = checkSum.setCheckSumMap(path);
-        checkSum.writeCheckSumToFie(resMap,"newCheckSum");
+        checkSum.writeCheckSumToFile(resMap,"newCheckSum");
     }
 }

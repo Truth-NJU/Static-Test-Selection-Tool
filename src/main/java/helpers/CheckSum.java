@@ -93,7 +93,7 @@ public class CheckSum implements StartsConstants {
      * @param checkSumMap
      * @param filename
      */
-    public void writeCheckSumToFie( Map<String, Long> checkSumMap,String filename) throws IOException {
+    public void writeCheckSumToFile(Map<String, Long> checkSumMap, String filename) throws IOException {
         BufferedWriter out = new BufferedWriter(new FileWriter(filename));
         for(String key:checkSumMap.keySet()){
             String str=key+" "+checkSumMap.get(key)+"\n";

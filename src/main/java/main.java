@@ -1,11 +1,10 @@
+import command.*;
 import helpers.CheckSum;
 import helpers.ComputeDepency;
 import helpers.ImpactedTest;
 import helpers.LoadAndStartJdeps;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
@@ -25,8 +24,8 @@ public class main {
         BufferedReader br4 = new BufferedReader(new InputStreamReader(System.in));
         String jarPathNew = br4.readLine();
         // 处理输入
-        dealWithInput(rootPathOld,jarPathOld,rootPathNew,jarPathNew);
-        String out = "Starts工具提供了一下五种命令，请选择：" + "\n" +
+        //dealWithInput(rootPathOld,jarPathOld,rootPathNew,jarPathNew);
+        String out = "Starts工具提供了以下五种命令，请选择：" + "\n" +
                 "-help: 列出starts所有功能" + "\n" + "-diff: 显示自上次运行Starts以来更改的所有Java类型(包括类、接口和枚举)"
                 + "\n" + "-impacted: 显示所有受变更影响的类型(不仅仅是测试类)" + "\n"
                 + "-select: 显示(但不运行)自上次starts运行以来受更改影响的测试类" + "\n"
@@ -36,17 +35,22 @@ public class main {
         BufferedReader br5 = new BufferedReader(new InputStreamReader(System.in));
         String commoand = br5.readLine();
         if (commoand.equals("help")) {
-
+            Help help=new Help();
+            help.allPurpose();
         } else if (commoand.equals("diff")) {
-
+            Diff diff=new Diff();
+            diff.dealWithInput(rootPathOld,jarPathOld,rootPathNew,jarPathNew);
         } else if (commoand.equals("impacted")) {
-
+            Impacted impacted=new Impacted();
+            impacted.dealWithInput(rootPathOld,jarPathOld,rootPathNew,jarPathNew);
         } else if (commoand.equals("select")) {
-
+            Select select=new Select();
+            select.dealWithInput(rootPathOld,jarPathOld,rootPathNew,jarPathNew);
         } else if (commoand.equals("starts")) {
 
         } else if (commoand.equals("clean")) {
-
+            Clean clean=new Clean();
+            clean.cleanSuccess();
         }
     }
 
@@ -60,7 +64,7 @@ public class main {
         CheckSum checkSum=new CheckSum();
         Map<String, Long> resMapOld = checkSum.setCheckSumMap(rootPathOld);
         // 将校验和写入文件
-        checkSum.writeCheckSumToFie(resMapOld,"oldCheckSum");
+        checkSum.writeCheckSumToFile(resMapOld,"oldCheckSum");
 
 
 
@@ -74,7 +78,7 @@ public class main {
         CheckSum checkSum2=new CheckSum();
         Map<String, Long> resMapNew = checkSum2.setCheckSumMap(rootPathNew);
         // 将校验和写入文件
-        checkSum.writeCheckSumToFie(resMapNew,"newCheckSum");
+        checkSum.writeCheckSumToFile(resMapNew,"newCheckSum");
 
         ImpactedTest impactedTest=new ImpactedTest();
         String path1="oldCheckSum";
