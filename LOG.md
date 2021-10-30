@@ -52,7 +52,49 @@
 
 # 2. jdeps的使用
 
+### 2.1 jdeps简介
 
+JDeps是*Java依赖关系分析工具* ，这是一个命令行工具，它处理Java字节码（意味着.class文件或包含它们的JAR），并分析类之间静态声明的依赖关系。 可以用各种方式过滤结果，并可以将其汇总到包或JAR级别。总而言之，它是检查各种形式的依赖图的非常有用的工具。
+
+从Java 8开始，就可以在JDK的bin文件夹中找到JDeps可执行文件jdeps。
+
+![](./img/jdeps.png)
+
+### 2.2 在命令行中使用jdeps
+
+首先需要将项目打包成jar文件，可以将打包后的jar文件放在项目的根目录下，这时候在命令行运行`jdeps + jar包的名字`就可以得到以下结果：
+
+![](./img/jdeps-dep.png)
+
+### 2.3 在java代码中利用jdeps获得类之间的依赖关系
+
+在这里实现的时候遇到了**问题**：jdeps是一个命令行工具，该怎么使用java代码去调用它呢？于是找到了github上面STARTS的开发者们开源的代码，进行了学习。
+
+1. 首先他们通过 java.util.spi.ToolProvider来加载jdeps，这里面涉及到了一些关于java反射的知识。
+
+   ```java
+   Class<?> toolProvider = ClassLoader.getSystemClassLoader().loadClass("java.util.spi.ToolProvider");
+   // getMethod获取并调用了toolProvider的findFirst方法
+   // findFirst方法返回具有给定名称的ToolProvider的第一个实例，由ServiceLoader使用系统类加载器加载。
+   // invoke用来调用findFirst方法
+   Object jdeps = toolProvider.getMethod("findFirst", String.class).invoke(null, "jdeps");
+   // 加载jdeps完成
+   jdeps = Optional.class.getMethod("get").invoke(jdeps);
+   ```
+
+2. 接着启动jdeps并运行jdeps实例，然后将jdeps的输出赋给output并最终返回出去进行进一步处理。
+
+   ```java
+   jdeps = Optional.class.getMethod("get").invoke(jdeps);
+   toolProvider.getMethod("run", PrintWriter.class, PrintWriter.class, String[].class)
+           .invoke(jdeps, new PrintWriter(output), new PrintWriter(output), args.toArray(new String[0]));
+   ```
+
+3. 我自己写了一个测试类来测试他们这部分代码的输出，输出的形式如下：
+
+   ![](./img/jdeps-test.png)
+
+   有了这样的输出就能很好的获得类型之间的静态依赖关系，也就完成了STARTS工具实现的第一步。
 
 # 3. yasgl的使用
 
