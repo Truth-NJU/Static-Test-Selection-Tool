@@ -187,7 +187,23 @@ JDeps是*Java依赖关系分析工具* ，这是一个命令行工具，它处�
       得到以下输出：
       ![](./img/yasgl_test.png)
 
-# 
+# 4. surefire测试插件的使用
 
+STARTS原先的开发者们将其实现为插件的形式，他们可以在待测试的项目目录下直接使用surefire插件运行那些受到变更影响的测试用例。而我在实现的时候并没有把STARTS实现成插件，这就使得直接运行受到变更影响的测试用例变得不方便。
 
+1. 由于并没有实现成插件，所以需要使用者们自己使用命令进入修改后的代码的目录，再使用`mvn test -Dtest=类名`运行受影响的测试。这就要求STARTS的使用者们在他们的项目中引入surefire插件的maven依赖，在pom.xml中加入如下依赖：
 
+   ```xml
+   <plugin>  
+     <groupId>org.apache.maven.plugins</groupId>  
+     <artifactId>maven-surefire-plugin</artifactId>  
+     <version>2.17</version>  
+   </plugin>  
+   ```
+
+2. 在我实现的STARTS中运行starts命令会出现以下类似的输出：
+   ![](./img/runTest.png)
+
+3. 这时候用户在自己的项目中配置好surefire的依赖后，就可以选择在电脑的终端直接运行以下三条命令，也可以选择进入项目后在IDEA下的terminal中输入第二和第三条命令来运行测试。
+4. 运行结果如下，看到`BUILD SUCCESS`字样就代表运行测试成功，可以看到测试的输出和结果
+   ![](./img/runTestResult.png)
