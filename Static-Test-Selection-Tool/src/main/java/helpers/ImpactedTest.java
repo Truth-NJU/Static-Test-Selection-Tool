@@ -25,7 +25,7 @@ public class ImpactedTest {
      * @param filePathNew
      * @return
      */
-    public Map<String, Long> readFileAndCompile(String filePathOld, String filePathNew) throws IOException {
+    public Map<String, Long> readFileAndCompare(String filePathOld, String filePathNew) throws IOException {
 
         Map<String, Long> oldCheckSum = new HashMap<>();
         Map<String, Long> newCheckSum = new HashMap<>();

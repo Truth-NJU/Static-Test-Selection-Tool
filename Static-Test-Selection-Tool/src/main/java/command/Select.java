@@ -46,7 +46,7 @@ public class Select {
         String path1 = "oldCheckSum";
         String path2 = "newCheckSum";
         // 获得受影响的所有类型
-        Map<String, Long> impactedType = impactedTest.readFileAndCompile(path1, path2);
+        Map<String, Long> impactedType = impactedTest.readFileAndCompare(path1, path2);
         // 输出受影响的测试
         ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapNew);
         return impactedTestList;

@@ -18,7 +18,7 @@ public class ComputeDepency {
      *
      * @param testName
      * @param deps
-     * @return
+     * @return 测试到该测试依赖的所有的类型的映射
      */
     public Map<String, Set<String>> testTotypeDependency(String testName, Map<String, Set<String>> deps) {
         Map<String, Set<String>> res=new HashMap<>();

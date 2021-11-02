@@ -14,7 +14,7 @@ public class TestImpactedTest {
         ImpactedTest impactedTest=new ImpactedTest();
         String path1="/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/Static-Test-Selection-Tool/oldCheckSum";
         String path2="/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/Static-Test-Selection-Tool/newCheckSum";
-        Map<String, Long> impactedType=impactedTest.readFileAndCompile(path1,path2);
+        Map<String, Long> impactedType=impactedTest.readFileAndCompare(path1,path2);
         for(String key:impactedType.keySet()){
             System.out.println(key);
         }
@@ -35,7 +35,7 @@ public class TestImpactedTest {
         String path1="oldCheckSum";
         String path2="newCheckSum";
         // 获得受影响的类型
-        Map<String, Long> impactedType=impactedTest.readFileAndCompile(path1,path2);
+        Map<String, Long> impactedType=impactedTest.readFileAndCompare(path1,path2);
         // 输出受影响的测试
         System.out.println(impactedTest.findImpactedTest(impactedType,resMap));
     }

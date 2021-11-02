@@ -45,7 +45,7 @@ public class Impacted {
         String path1 = "oldCheckSum";
         String path2 = "newCheckSum";
         // 获得受影响的类型
-        Map<String, Long> impactedType = impactedTest.readFileAndCompile(path1, path2);
+        Map<String, Long> impactedType = impactedTest.readFileAndCompare(path1, path2);
         for (String key : impactedType.keySet()) {
             System.out.println(key);
         }
