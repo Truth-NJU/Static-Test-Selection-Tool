@@ -8,8 +8,6 @@ import helpers.LoadAndStartJdeps;
 import java.util.*;
 
 public class Impacted {
-    // TODO
-
     /**
      * 显示所有受变更影响的类型(不仅仅是测试类)
      * @param rootPathOld

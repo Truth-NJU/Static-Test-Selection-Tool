@@ -13,6 +13,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -45,7 +52,7 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.runner" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -104,7 +111,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestTDG.testTDG" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestStarts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="STARTS_OWN" />
       <extension name="coverage">
         <pattern>
@@ -113,8 +120,23 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="helpersTest" />
-      <option name="MAIN_CLASS_NAME" value="helpersTest.TestTDG" />
-      <option name="METHOD_NAME" value="testTDG" />
+      <option name="MAIN_CLASS_NAME" value="helpersTest.TestStarts" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestStarts.testStarts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="STARTS_OWN" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="helpersTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="helpersTest" />
+      <option name="MAIN_CLASS_NAME" value="helpersTest.TestStarts" />
+      <option name="METHOD_NAME" value="testStarts" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -123,8 +145,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.main" />
-        <item itemvalue="JUnit.TestTDG.testTDG" />
+        <item itemvalue="JUnit.TestStarts" />
         <item itemvalue="JUnit.TestJdeps.testOutput" />
+        <item itemvalue="JUnit.TestStarts.testStarts" />
         <item itemvalue="JUnit.TestClassPath.testClassPath" />
       </list>
     </recent_temporary>
@@ -142,7 +165,9 @@
       <workItem from="1635583269149" duration="28000" />
       <workItem from="1635583513879" duration="48000" />
       <workItem from="1635583586985" duration="2137000" />
-      <workItem from="1635817806258" duration="2299000" />
+      <workItem from="1635817806258" duration="3935000" />
+      <workItem from="1635824750216" duration="4000" />
+      <workItem from="1635837265651" duration="6219000" />
     </task>
     <servers />
   </component>

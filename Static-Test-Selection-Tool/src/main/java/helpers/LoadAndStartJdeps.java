@@ -109,6 +109,7 @@ public final class LoadAndStartJdeps implements StartsConstants {
         // 按行分割jdepsOutput
         List<String> lines = Arrays.asList(jdepsOutput.toString().split(System.lineSeparator()));
         for (String line : lines) {
+            //System.out.println(line);
             String[] parts = line.split("->");
             String clazz = parts[0].trim();
             if (clazz.startsWith(CLASSES) || clazz.startsWith(TEST_CLASSES) || clazz.endsWith(JAR_EXTENSION)) {

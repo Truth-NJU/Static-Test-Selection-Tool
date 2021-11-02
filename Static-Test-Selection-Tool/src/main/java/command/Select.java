@@ -9,14 +9,15 @@ import java.util.*;
 
 public class Select {
     /**
-     * 显示(但不运行)自上次starts运行以来受更改影响的测试类
+     *  显示(但不运行)自上次starts运行以来受更改影响的测试类
      * @param rootPathOld
      * @param jarPathOld
      * @param rootPathNew
      * @param jarPathNew
+     * @return
      * @throws Exception
      */
-    public void dealWithInput(String rootPathOld, String jarPathOld, String rootPathNew, String jarPathNew) throws Exception {
+    public ArrayList<String> dealWithInput(String rootPathOld, String jarPathOld, String rootPathNew, String jarPathNew) throws Exception {
         // 处理旧版本
         ComputeDepency computeDepency = new ComputeDepency();
         List<String> argold = new ArrayList<>(Arrays.asList("-v", jarPathOld));
@@ -48,8 +49,6 @@ public class Select {
         Map<String, Long> impactedType = impactedTest.readFileAndCompile(path1, path2);
         // 输出受影响的测试
         ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapNew);
-        for (String test : impactedTestList) {
-            System.out.println(test);
-        }
+        return impactedTestList;
     }
 }

@@ -9,7 +9,7 @@
         <module name="STARTS_OWN" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8">
       <module name="STARTS_OWN" target="8" />
     </bytecodeTargetLevel>
   </component>
