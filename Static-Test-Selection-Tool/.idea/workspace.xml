@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="STARTS_OWN:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8dfacad-a1ac-45b6-b0e6-cfee7595938f" name="默认更改列表" comment="">
-      <change beforePath="$PROJECT_DIR$/STARTS_OWN.iml" beforeDir="false" />
-    </list>
+    <list default="true" id="a8dfacad-a1ac-45b6-b0e6-cfee7595938f" name="默认更改列表" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +26,7 @@
     </option>
     <option name="importingSettings">
       <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
         <option name="jdkForImporter" value="1.8" />
         <option name="vmOptionsForImporter" value="-Xmx768m" />
       </MavenImportingSettings>
@@ -38,10 +42,15 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.runner" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -55,7 +64,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.main">
     <configuration name="main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main" />
       <module name="STARTS_OWN" />
@@ -63,9 +72,60 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestClassPath.testClassPath" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="STARTS_OWN" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="helpersTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="helpersTest" />
+      <option name="MAIN_CLASS_NAME" value="helpersTest.TestClassPath" />
+      <option name="METHOD_NAME" value="testClassPath" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestJdeps.testOutput" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="STARTS_OWN" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="helpersTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="helpersTest" />
+      <option name="MAIN_CLASS_NAME" value="helpersTest.TestJdeps" />
+      <option name="METHOD_NAME" value="testOutput" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestTDG.testTDG" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="STARTS_OWN" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="helpersTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="helpersTest" />
+      <option name="MAIN_CLASS_NAME" value="helpersTest.TestTDG" />
+      <option name="METHOD_NAME" value="testTDG" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.main" />
+        <item itemvalue="JUnit.TestTDG.testTDG" />
+        <item itemvalue="JUnit.TestJdeps.testOutput" />
+        <item itemvalue="JUnit.TestClassPath.testClassPath" />
       </list>
     </recent_temporary>
   </component>
@@ -80,6 +140,9 @@
       <option name="presentableId" value="Default" />
       <updated>1635583267861</updated>
       <workItem from="1635583269149" duration="28000" />
+      <workItem from="1635583513879" duration="48000" />
+      <workItem from="1635583586985" duration="2137000" />
+      <workItem from="1635817806258" duration="2299000" />
     </task>
     <servers />
   </component>
@@ -91,7 +154,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

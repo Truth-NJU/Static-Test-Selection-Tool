@@ -73,7 +73,7 @@ public final class LoadAndStartJdeps implements StartsConstants {
                 // 加载jdeps完成
                 jdeps = Optional.class.getMethod("get").invoke(jdeps);
                 // 启动jdeps
-                // 运行jdeps实例，为成功运行返回零。 任何非零返回值都表示执行期间特定于工具的错误。
+                // 运行jdeps实例，成功运行返回零。 任何非零返回值都表示执行期间特定于工具的错误。
                 // 应提供两个流，用于“预期”输出，以及任何错误消息。 如果不必区分输出，则可以将相同的流用于两者。
                 // 将jdeps的输出赋给output
                 toolProvider.getMethod("run", PrintWriter.class, PrintWriter.class, String[].class)

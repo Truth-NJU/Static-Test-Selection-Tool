@@ -90,11 +90,104 @@ JDeps是*Java依赖关系分析工具* ，这是一个命令行工具，它处�
            .invoke(jdeps, new PrintWriter(output), new PrintWriter(output), args.toArray(new String[0]));
    ```
 
-3. 我自己写了一个测试类来测试他们这部分代码的输出，输出的形式如下：
+3. 最终将jdeps的输出存为一个类到它所依赖的所有类型的map，方便进行调用和输出
+
+4. 我自己写了一个测试类来测试他们这部分代码的输出，输出的形式如下：
 
    ![](./img/jdeps-test.png)
 
    有了这样的输出就能很好的获得类型之间的静态依赖关系，也就完成了STARTS工具实现的第一步。
 
 # 3. yasgl的使用
+
+论文中使用名为yasgl的自定义图形库来构造类型之间的依赖图，将每种类型作为一个节点添加到yasgl图中，并添加由jdeps计算的依赖项作为图中节点之间的边。
+
+使用yasgl图，STARTS计算每个测试类的传递闭包，以找到每个测试所依赖的所有类型。我们最初的原型使用了JGraphT，但是yasgl在计算传递闭包方面更快。例如，yasgl需要1.4秒来计算一个包含41,960个节点和509,946条边的图的传递闭包(来自一个拥有110个测试类的项目的单个模块)。JGraphT需要2.7秒来计算同一个传递闭包，当考虑到项目中的所有模块时，这种差异会不断累积。  请注意，**Starts使用的yasgl TDG不区分使用边和继承边**。
+
+## 3.1 引入依赖
+
+在pom.xml中加入以下依赖：
+
+```xml
+<dependency>
+  <groupId>edu.illinois</groupId>
+  <artifactId>yasgl</artifactId>
+  <version>1.2</version>
+</dependency>
+```
+
+## 3.2 方法应用
+
+1. 通过jdeps构造依赖类型之间的依赖图
+
+   1. 调用yasgl提供的DirectedGraphBuilder类来构建类型之间的依赖图TDG
+
+      ```java
+      DirectedGraphBuilder<String> builder=new DirectedGraphBuilder<>();
+      ```
+
+   2. 将使用jdeps得到的类型之间的依赖关系当作边加入依赖图中
+
+      ```java
+      for(String key:deps.keySet()){
+          for(String val:deps.get(key)){
+              builder.addEdge(key,val);
+          }
+      }
+      ```
+
+   3. 这样就完成了类型之间的依赖图的构建
+
+2. 根据yasgl构造的类型依赖图得到每一个类的依赖的传递闭包
+
+   1. 首先需要一个方法来判断图中一个类能达到的其它所有的类，即和当前类之间存在依赖关系其它所有的类。调用yasgl提供的acceptForward方法来获得。
+
+      ```java
+      public static Set<String> computeReachabilityFromChangedClasses(Set<String> changed, DirectedGraph<String> graph) {
+          final Set<String> reachable = graph.acceptForward(changed, new GraphVertexVisitor<String>() {
+              @Override
+              public void visit(String name) {
+              }
+          });
+          return reachable;
+      }
+      ```
+
+   2. 使用上述的方法对每一个待分析的类获得它依赖的所有类
+
+      ```java
+      Map<String, Set<String>> transitiveClosurePerClass = new HashMap<>();
+      for (String test : classesToAnalyze) {
+          Set<String> deps = computeReachabilityFromChangedClasses(
+                  new HashSet<>(Arrays.asList(test)), graph);
+          deps.add(test);
+          transitiveClosurePerClass.put(test, deps);
+      }
+      return transitiveClosurePerClass;
+      ```
+
+   3. 编写测试，分析man这个类的所有依赖
+
+      ```java
+      public void testTDG() {
+          CreateTDGWithYasgl createTDGWithYasgl = new CreateTDGWithYasgl();
+          // 测试反转后的存储格式
+          List<String> arg = new ArrayList<>(Arrays.asList("-v", "/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01/out/artifacts/test01_jar/test01.jar"));
+          Map<String, Set<String>> depMap = LoadAndStartJdeps.runJdeps(arg);
+          DirectedGraph<String> graph = createTDGWithYasgl.makeGraph(depMap);
+          Map<String, Set<String>> resMap = createTDGWithYasgl.getTransitiveClosurePerClass(graph, Arrays.asList("man"));
+          for (String key : resMap.keySet()) {
+              for (String value : resMap.get(key)) {
+                  System.out.println(key + "->" + value);
+              }
+          }
+      }
+      ```
+
+      得到以下输出：
+      ![](./img/yasgl_test.png)
+
+# 
+
+
 

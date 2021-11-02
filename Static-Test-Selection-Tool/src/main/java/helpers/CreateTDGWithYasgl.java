@@ -47,7 +47,7 @@ public class CreateTDGWithYasgl implements StartsConstants {
     }
 
     /**
-     * 计算某一个类是否能够到达另一个类，即是否存在依赖关系
+     * 计算图中一个类能达到的其它所有的类，即和当前类之间存在依赖关系其它所有的类
      * @param changed
      * @param graph
      * @return
