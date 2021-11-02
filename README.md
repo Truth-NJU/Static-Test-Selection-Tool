@@ -1,10 +1,13 @@
 # Static-Test-Selection-Tool:STARTS
+
 复现静态测试选择工具STARTS，STARTS是一个类级的静态回归测试用例选择工具。
 
-## 基础知识
+## 1.工具介绍
+
+### 1.1 基础知识
 回归测试是软件开发的重要组成部分。在每次代码更改之后，开发人员运行回归测试套件中的测试，以确保更改不会破坏任何现有功能。然而，当回归测试套件包含许多测试时，在每次更改之后运行所有测试(通常称为RetestAll)非常耗时，并减慢了软件开发过程。回归测试选择(RTS)是通过选择只运行受更改影响的测试来降低回归测试成本的一种方法。RTS技术的工作原理是**找到每个测试的依赖关系，并选择依赖于更改的测试。运行更少但必要的测试可以加快回归测试，同时确保不会错过任何测试失败。**
 
-## STARTS实现的目标
+### 1.2 STARTS实现的目标
 1. starts:help 列出STARTS所有的目标和它们的用途。
 2. starts:diff 显示自上次运行STARTS以来更改的所有Java类型(包括类、接口和枚举)。
 3. starts:impacted 显示所有受变更影响的类型(不仅仅是测试类)，从而为变更影响分析提供了一种方法。
@@ -13,7 +16,7 @@
 6. starts:clean. 删除从上一次运行(在.starts目录中)中存储的所有starts工件，重新设置STARTS，以便在下一次运行时，认为所有类型都已更改(如果使用starts:starts，则选择所有测试运行)。
 
 
-## 实现步骤
+### 1.3 实现步骤
 1. **查找类型之间的依赖关系**：
    - starts需要计算应用程序中所有**类型之间的依赖关系**。
    - 我们之前的工作中的原型使用ASM来解析给定类型的已编译类文件中的所有字节码，以便计算其依赖项。然而，解析整个类文件只是为了找到依赖项是相当缓慢的，因为它需要递归地访问每个类型的字段、方法、签名和注释来收集所引用的所有类型。
@@ -42,4 +45,91 @@
 6. **运行受影响测试**:
    - STARTS按前面描述的方式计算要运行的选定测试集：它将没有受到影响的测试排除在应用程序中的所有测试集之外。具体来说，STARTS会动态地将未受影响的测试添加到Surefire插件已经配置为不运行的测试集中。因此，当STARTS调用Maven Surefire插件来运行测试时，Surefire将只运行受更改影响的测试。
    - 目标starts:starts将执行前面的所有步骤，以查找更改的类型、选择受影响的测试并运行那些选定的测试。
+
+## 2. 模块构成
+
+代码共分为5个模块
+
+```java
+/src/main/java/command
+/src/main/java/constants
+/src/main/java/helpers
+/src/main/java/main.java
+/src/test/java/helpersTest
+```
+
+1. **/src/main/java/command**：封装STARTS的六大功能
+   - Help 列出STARTS所有的功能。
+   - Diff 显示自上次运行STARTS以来更改的所有Java类型(包括类、接口和枚举)。
+   - Impacted 显示所有受变更影响的类型(不仅仅是测试类)。
+   - Select 显示(但不运行)自上次STARTS运行以来受更改影响的测试类
+   - Starts 运行受影响的测试
+   - Clean 重新设置STARTS，以便在下一次运行时，认为所有类型都已更改(如果使用starts:starts，则选择所有测试运行)。
+2. **/src/main/java/constants**：定义了各种常量，方便后续的使用
+3. **/src/main/java/helpers**：实现了STARTS运行需要的各种工具类和方法
+   - LoadAndStartJdeps类：使用jdeps对于给定的jar文件分析该jar文件对应的项目的各个类之间的依赖关系，并以`Map<String, Set<String>>`的形式存储，方便后续的使用
+   - CreateTDGWithYasgl类：
+     - makeGraph方法：根据LoadAndStartJdeps类使用jdeps生成的各个类之间的依赖关系，使用yasgl自定义图形库来构造TDG（类之间的依赖关系图）
+     - getTransitiveClosurePerClass方法和computeReachabilityFromChangedClasses方法：使用makeGraph得到的类之间的依赖关系图计算得到待分析类列表中的每一个类的依赖传递闭包。（即每一个类和它依赖的所有类的映射关系）
+   - ClassPath类：
+     - getClasspathSet方法和getpath方法：根据项目的根目录路径获得该根目录下所有类和它们对应的绝对路径的映射
+     - getAllClassName方法：获得项目中所有的类的名字
+     - getAllTestClassesName方法：获得待测项目中的所有测试类的名字
+   - ComputeDepency类：
+     - testTotypeDependency方法：通过测试的名字和jdeps分析得到的依赖构建的TDG图计算该测试类所依赖的所有类型。
+     - typeTotestDependency方法：由于STARTS采用“类型到依赖于该类型的所有测试“的存储方式，所以我们需要对testTotypeDependency方法得到的测试到该测试依赖的类型的映射进行反转，并且通过项目的根路径分析得到项目中所有类型到依赖于该类型的测试的映射关系。
+   - CheckSum类：
+     - getSingleCheckSum方法和getFileCRCCode方法：根据文件的路径计算文件的校验和。
+     - getCheckSum方法：根据文件的路径列表，计算每一个文件的校验和并且存入checkSumMap中。
+     - setCheckSumMap方法：计算一个项目中所有类型（除去测试类）和对应校验和的映射
+     - writeCheckSumToFile方法：将计算得到的校验和写入文件
+   - ImpactedTest类：
+     - readFileAndCompare方法：比较新旧校验和文件，找出已更改的的类型
+     - findImpactedTest方法：根据已更改的类型和项目中所有类型到依赖于该类型的测试的映射关系找到受影响的测试
+4. **/src/main/java/main.java**：项目的启动代码存放的地方
+5. **/src/test/java/helpersTest**：对/src/main/java/helpers下各个工具类的测试
+
+## 3. 使用说明
+
+1. 运行main.java，按照输出的提示输入旧版本项目的绝对路径地址和jar包地址、修改后新版本项目的绝对路径地址和jar包地址。输入完成后就会提示用户STARTS所具有的可以使用的命令，并提示用户继续输入命令。
+
+   ![](./img/runMain.png)
+
+2. 输入help命令会列出STARTS所有的功能
+
+   ![](./img/help.png)
+
+3. 输入diff命令会显示自上次运行STARTS以来更改的所有Java类型(包括类、接口和枚举)
+
+   ![](./img/diff.png)
+
+4. 输入impacted命令会显示所有受变更影响的类型(不仅仅是测试类)
+
+   ![](./img/impacted.png)
+
+5. 输入select命令会显示(但不运行)自上次STARTS运行以来受更改影响的测试类
+
+   ![](./img/select.png)
+
+6. 输入starts命令会提示用户运行受影响的测试所需要的命令
+   ![](./img/starts.png)
+
+7. 输入clean命令会重新设置STARTS并提示用户重置成功，以便在下一次运行时，认为所有类型都已更改(如果使用starts命令，则选择所有测试运行)。
+   ![](./img/clean.png)
+
+8. 输入exit命令退出STARTS
+
+9. **注意**：
+
+   - 由于并没有实现成插件，所以需要使用者们自己使用命令进入修改后的代码的目录，再使用`mvn test -Dtest=类名`运行受影响的测试。所以用户需要在他们的项目中引入surefire插件的maven依赖，在pom.xml中加入如下依赖：
+
+     ```xml
+     <plugin>  
+       <groupId>org.apache.maven.plugins</groupId>  
+       <artifactId>maven-surefire-plugin</artifactId>  
+       <version>2.17</version>  
+     </plugin> 
+     ```
+
+   - 用户的项目中在标记为源码根和测试源码根的目录下都需要写测试类，即用户将测试源码根的目录下的测试类（测试用例）复制到源码根目录下，方便jdeps的依赖关系的获取以及surefire插件执行受到代码变更影响的测试用例。
 
