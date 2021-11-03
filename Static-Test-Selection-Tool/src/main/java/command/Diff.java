@@ -43,24 +43,25 @@ public class Diff {
         ImpactedTest impactedTest = new ImpactedTest();
         String path1 = "oldCheckSum";
         String path2 = "newCheckSum";
-        // 获得变更的类型(不包括删除掉的类型)
+        // 获得变更的类型(不包括删除掉的类型，且要删去新出现的类型)
         Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
-        // 获得删除掉的类型
-        ArrayList<String> deleteType=impactedTest.getDeleteType();
+        // 获得新出现的类型
+        Map<String, Long> newType=impactedTest.getNewType();
 
-        String temp = ""; // 判断是否有类型发生变化
-        for (String key : changedType.keySet()) {
-            temp += key;
+        // 去除新出现的类型和删除掉的类型，只显示更改的类型
+        ArrayList<String> changeTypeList=new ArrayList<>();
+        for(String key:changedType.keySet()){
+            if(!newType.containsKey(key)){
+                changeTypeList.add(key);
+            }
         }
-        for (String key : deleteType) {
+        String temp = ""; // 判断是否有类型发生变化
+        for (String key : changeTypeList) {
             temp += key;
         }
         if (Objects.equals(temp, "")) System.out.println("没有类型发生变化");
         else {
-            for (String key : changedType.keySet()) {
-                System.out.println(key);
-            }
-            for (String key : deleteType) {
+            for (String key : changeTypeList) {
                 System.out.println(key);
             }
         }

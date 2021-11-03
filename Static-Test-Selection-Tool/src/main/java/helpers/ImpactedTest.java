@@ -90,6 +90,9 @@ public class ImpactedTest {
     public ArrayList<String> getDeleteType() {
         return this.deleteType;
     }
+    public Map<String, Long> getNewType() {
+        return this.newType;
+    }
 
 
     /**
