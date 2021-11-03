@@ -36,7 +36,8 @@ public class TestImpactedTest {
         String path2="newCheckSum";
         // 获得受影响的类型
         Map<String, Long> impactedType=impactedTest.readFileAndCompare(path1,path2);
-        // 输出受影响的测试
-        System.out.println(impactedTest.findImpactedTest(impactedType,resMap));
+
+//        // 输出受影响的测试
+//        System.out.println(impactedTest.findImpactedTest(impactedType,resMap));
     }
 }

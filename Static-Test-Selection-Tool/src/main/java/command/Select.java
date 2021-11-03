@@ -48,8 +48,19 @@ public class Select {
         String path2 = "newCheckSum";
         // 获得受影响的所有类型
         Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
+        // 获得新出现的类型
+        Map<String, Long> newType=impactedTest.getNewType();
+
+        // 去除新出现的类型和删除掉的类型，只显示更改的类型
+        ArrayList<String> changeTypeList=new ArrayList<>();
+        for(String key:changedType.keySet()){
+            if(!newType.containsKey(key)){
+                changeTypeList.add(key);
+            }
+        }
+
         // 输出受影响的测试
-        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changedType, typeTotestDependencyMapNew);
+        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changeTypeList, typeTotestDependencyMapNew);
         //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
         return impactedTestList;
     }
