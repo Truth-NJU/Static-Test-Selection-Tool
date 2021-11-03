@@ -86,7 +86,7 @@
       <module name="STARTS_OWN" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="helpersTest.*" />
+          <option name="PATTERN" value="commandTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -102,12 +102,12 @@
       <module name="STARTS_OWN" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="helpersTest.*" />
+          <option name="PATTERN" value="commandTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="helpersTest" />
-      <option name="MAIN_CLASS_NAME" value="helpersTest.TestClean" />
+      <option name="PACKAGE_NAME" value="commandTest" />
+      <option name="MAIN_CLASS_NAME" value="commandTest.TestClean" />
       <option name="METHOD_NAME" value="testClean" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
@@ -118,7 +118,7 @@
       <module name="STARTS_OWN" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="helpersTest.*" />
+          <option name="PATTERN" value="commandTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -130,17 +130,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestDependency.testTypeTotestDependency" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestTDG.testTDG" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="STARTS_OWN" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="helpersTest.*" />
+          <option name="PATTERN" value="commandTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="helpersTest" />
-      <option name="MAIN_CLASS_NAME" value="helpersTest.TestDependency" />
-      <option name="METHOD_NAME" value="testTypeTotestDependency" />
+      <option name="MAIN_CLASS_NAME" value="helpersTest.TestTDG" />
+      <option name="METHOD_NAME" value="testTDG" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -149,10 +149,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.main" />
-        <item itemvalue="JUnit.TestClean.testClean" />
-        <item itemvalue="JUnit.TestDependency.testTypeTotestDependency" />
-        <item itemvalue="JUnit.TestDependency.testDepencyByTest" />
         <item itemvalue="JUnit.TestClassPath.testGetAllClassName" />
+        <item itemvalue="JUnit.TestDependency.testDepencyByTest" />
+        <item itemvalue="JUnit.TestTDG.testTDG" />
+        <item itemvalue="JUnit.TestClean.testClean" />
       </list>
     </recent_temporary>
   </component>
@@ -176,7 +176,8 @@
       <workItem from="1635861706044" duration="66000" />
       <workItem from="1635903854712" duration="383000" />
       <workItem from="1635904284194" duration="1811000" />
-      <workItem from="1635907070690" duration="932000" />
+      <workItem from="1635907070690" duration="4589000" />
+      <workItem from="1635915516066" duration="1967000" />
     </task>
     <servers />
   </component>

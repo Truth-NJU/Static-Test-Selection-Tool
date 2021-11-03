@@ -1,4 +1,4 @@
-package helpersTest;
+package commandTest;
 
 import command.Starts;
 import org.junit.Test;

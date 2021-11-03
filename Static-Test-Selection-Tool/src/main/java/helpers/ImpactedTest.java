@@ -8,8 +8,8 @@ import java.util.*;
  */
 public class ImpactedTest {
 
-    // 受影响的类型（包括新出现的和删除掉的类型）
-    private Map<String, Long> impactedType = new HashMap<>();
+    // 变更的类型（包括新出现的类型）
+    private Map<String, Long> changedType = new HashMap<>();
 
     // 新出现的类型
     private Map<String, Long> newType = new HashMap<>();
@@ -68,12 +68,12 @@ public class ImpactedTest {
             // 该类型之前有
             if (oldCheckSum.containsKey(key)) {
                 if (!Objects.equals(newCheckSum.get(key), oldCheckSum.get(key))) {
-                    impactedType.put(key, newCheckSum.get(key));
+                    changedType.put(key, newCheckSum.get(key));
                 }
             }
             // 新出现的类型
             if (!oldCheckSum.containsKey(key)) {
-                impactedType.put(key, newCheckSum.get(key));
+                changedType.put(key, newCheckSum.get(key));
                 newType.put(key, newCheckSum.get(key));
             }
         }
@@ -84,7 +84,11 @@ public class ImpactedTest {
                 deleteType.add(key);
             }
         }
-        return impactedType;
+        return changedType;
+    }
+
+    public ArrayList<String> getDeleteType() {
+        return this.deleteType;
     }
 
 
@@ -99,7 +103,7 @@ public class ImpactedTest {
         ArrayList<String> impactedTest = new ArrayList<>();
         for (String type : impactedType.keySet()) {
             Set<String> tests = typeTotestDependencyMap.get(type);
-            for (Iterator it = tests.iterator();it.hasNext();) {
+            for (Iterator it = tests.iterator(); it.hasNext(); ) {
                 impactedTest.add(it.next().toString());
             }
         }

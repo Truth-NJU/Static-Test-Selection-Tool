@@ -12,9 +12,7 @@ public class Diff {
      * 显示自上次运行Starts以来更改的所有Java类型(包括类、接口和枚举)。
      *
      * @param rootPathOld
-     * @param jarPathOld
      * @param rootPathNew
-     * @param jarPathNew
      * @throws Exception
      */
     public void dealWithInput(String rootPathOld, String rootPathNew) throws Exception {
@@ -45,15 +43,24 @@ public class Diff {
         ImpactedTest impactedTest = new ImpactedTest();
         String path1 = "oldCheckSum";
         String path2 = "newCheckSum";
-        // 获得受变更影响的类型
-        Map<String, Long> impactedType = impactedTest.readFileAndCompare(path1, path2);
+        // 获得变更的类型(不包括删除掉的类型)
+        Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
+        // 获得删除掉的类型
+        ArrayList<String> deleteType=impactedTest.getDeleteType();
+
         String temp = ""; // 判断是否有类型发生变化
-        for (String key : impactedType.keySet()) {
+        for (String key : changedType.keySet()) {
+            temp += key;
+        }
+        for (String key : deleteType) {
             temp += key;
         }
         if (Objects.equals(temp, "")) System.out.println("没有类型发生变化");
         else {
-            for (String key : impactedType.keySet()) {
+            for (String key : changedType.keySet()) {
+                System.out.println(key);
+            }
+            for (String key : deleteType) {
                 System.out.println(key);
             }
         }

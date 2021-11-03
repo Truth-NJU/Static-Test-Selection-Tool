@@ -1,9 +1,6 @@
 package command;
 
-import helpers.CheckSum;
-import helpers.ComputeDepency;
-import helpers.ImpactedTest;
-import helpers.LoadAndStartJdeps;
+import helpers.*;
 
 import java.util.*;
 
@@ -46,23 +43,73 @@ public class Impacted {
         String path1 = "oldCheckSum";
         String path2 = "newCheckSum";
 
-        // 获得受影响的类型
-        Map<String, Long> impactedType = impactedTest.readFileAndCompare(path1, path2);
+        // 获得变更的类型(不包括删除掉的类型)
+        Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
+        // 获得删除掉的类型
+        ArrayList<String> deleteType = impactedTest.getDeleteType();
+
+
+        ClassPath classPath = new ClassPath();
+        Map<String, String> classpathMap = classPath.getClasspathSet(rootPathNew);
+        // 获得所有类的名称
+        ArrayList<String> allClass = classPath.getAllClassName(classpathMap);
+        // 获得所有测试类的名称
+        ArrayList<String> testClass = classPath.getAllTestClassesName(allClass);
+        // 获得不是测试类的类型
+        ArrayList<String> commonTypeClass = new ArrayList<>();
+        for (int i = 0; i < allClass.size(); i++) {
+            if (testClass.indexOf(allClass.get(i)) == -1) {
+                commonTypeClass.add(allClass.get(i));
+            }
+        }
+        // 获得受更改的类型影响的类型
+        ArrayList<String> typeImpactedByChange = new ArrayList<>();
+        // 遍历所有不是测试类的类型
+        for (String clazzName : commonTypeClass) {
+            // 获得类型和该类型依赖的类型
+            Map<String, Set<String>> typeDep = computeDepency.testTotypeDependency(clazzName, depMapOld);
+            for (String key : typeDep.keySet()) {
+                for (String name : typeDep.get(key)) {
+                    // 若该类型依赖的某个类型在变更的类型中出现或者在删除掉的类型中出现，则该类型会受到变更的影响，需要输出
+                    if (changedType.containsKey(name) || deleteType.indexOf(name) != -1) {
+                        if (typeImpactedByChange.indexOf(key) == -1)
+                            typeImpactedByChange.add(key);
+                        break;
+                    }
+                }
+            }
+        }
+
         String temp = ""; // 用来判断结果是否为空，既有没有类型发生变化
-        for (String key : impactedType.keySet()) {
+        for (String key : changedType.keySet()) {
+            temp += key;
+        }
+        for (String key : deleteType) {
+            temp += key;
+        }
+        for (String key : typeImpactedByChange) {
             temp += key;
         }
 
         // 获得受影响的测试
-        //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapNew);
-        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
+        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changedType, typeTotestDependencyMapNew);
+        //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
         for (String test : impactedTestList) {
             temp += test;
         }
         if (Objects.equals(temp, "")) {
             System.out.println("没有类型和测试发生变化");
         } else {
-            for (String key : impactedType.keySet()) {
+            // 输出变更的类型（不包括删除的类型）
+            for (String key : changedType.keySet()) {
+                System.out.println(key);
+            }
+            // 输出被删除的类型
+            for (String key : deleteType) {
+                System.out.println(key);
+            }
+            // 输出受变更影响的类型
+            for (String key : typeImpactedByChange) {
                 System.out.println(key);
             }
             // 输出受影响的测试
