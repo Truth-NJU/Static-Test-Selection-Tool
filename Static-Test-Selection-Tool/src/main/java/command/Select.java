@@ -9,7 +9,8 @@ import java.util.*;
 
 public class Select {
     /**
-     *  显示(但不运行)自上次starts运行以来受更改影响的测试类
+     * 显示(但不运行)自上次starts运行以来受更改影响的测试类
+     *
      * @param rootPathOld
      * @param jarPathOld
      * @param rootPathNew
@@ -34,7 +35,7 @@ public class Select {
         List<String> argnew = new ArrayList<>(Arrays.asList("-v", jarPathNew));
         Map<String, Set<String>> depMapNew = LoadAndStartJdeps.runJdeps(argnew);
         ComputeDepency computeDepency2 = new ComputeDepency();
-        // 旧版本的类型到依赖于该类型的测试的映射
+        // 新版本的类型到依赖于该类型的测试的映射
         Map<String, Set<String>> typeTotestDependencyMapNew = computeDepency2.typeTotestDependency(rootPathNew, depMapNew);
 
         CheckSum checkSum2 = new CheckSum();
@@ -48,7 +49,8 @@ public class Select {
         // 获得受影响的所有类型
         Map<String, Long> impactedType = impactedTest.readFileAndCompare(path1, path2);
         // 输出受影响的测试
-        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapNew);
+        //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapNew);
+        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
         return impactedTestList;
     }
 }

@@ -28,11 +28,15 @@ public class Starts {
      * @param impactedTestList
      */
     public void runImpactedTests(ArrayList<String> impactedTestList, String rootPathNew) {
+        if (impactedTestList.size() == 0) {
+            System.out.println("没有受影响的测试需要运行");
+            return;
+        }
         // 运行受影响的测试类
         System.out.println("请在终端使用以下命令重新运行测试类：");
-        System.out.println("cd "+rootPathNew);
-        for(String impactedTest:impactedTestList)
-            System.out.println("mvn test -Dtest="+impactedTest);
+        System.out.println("cd " + rootPathNew);
+        for (String impactedTest : impactedTestList)
+            System.out.println("mvn test -Dtest=" + impactedTest);
     }
 
 

@@ -47,7 +47,7 @@ public class main {
                 // status=false代表正常运行
                 if (Objects.equals(status, "false")) {
                     Diff diff = new Diff();
-                    diff.dealWithInput(rootPathOld, jarPathOld, rootPathNew, jarPathNew);
+                    diff.dealWithInput(rootPathOld, rootPathNew);
                     System.out.println();
                 } else {
                     // status=true代表这次运行时，认为所有的类型都已经更改
@@ -83,8 +83,12 @@ public class main {
                 if (Objects.equals(status, "false")) {
                     Select select = new Select();
                     ArrayList<String> impactedTestList = select.dealWithInput(rootPathOld, jarPathOld, rootPathNew, jarPathNew);
-                    for (String test : impactedTestList) {
-                        System.out.println(test);
+                    if (impactedTestList.size() == 0) {
+                        System.out.println("没有受影响的测试");
+                    } else {
+                        for (String test : impactedTestList) {
+                            System.out.println(test);
+                        }
                     }
                     System.out.println();
                 } else {
@@ -135,6 +139,9 @@ public class main {
                 writer.flush();
                 writer.close();
                 break;
+            } else {
+                System.out.println("命令错误，请重新输入！");
+                System.out.println();
             }
         }
     }

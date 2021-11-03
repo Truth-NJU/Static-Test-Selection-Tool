@@ -10,6 +10,7 @@ import java.util.*;
 public class Impacted {
     /**
      * 显示所有受变更影响的类型(不仅仅是测试类)
+     *
      * @param rootPathOld
      * @param jarPathOld
      * @param rootPathNew
@@ -44,15 +45,30 @@ public class Impacted {
         ImpactedTest impactedTest = new ImpactedTest();
         String path1 = "oldCheckSum";
         String path2 = "newCheckSum";
+
         // 获得受影响的类型
         Map<String, Long> impactedType = impactedTest.readFileAndCompare(path1, path2);
+        String temp = ""; // 用来判断结果是否为空，既有没有类型发生变化
         for (String key : impactedType.keySet()) {
-            System.out.println(key);
+            temp += key;
         }
-        // 输出受影响的测试
-        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapNew);
+
+        // 获得受影响的测试
+        //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapNew);
+        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
         for (String test : impactedTestList) {
-            System.out.println(test);
+            temp += test;
+        }
+        if (Objects.equals(temp, "")) {
+            System.out.println("没有类型和测试发生变化");
+        } else {
+            for (String key : impactedType.keySet()) {
+                System.out.println(key);
+            }
+            // 输出受影响的测试
+            for (String test : impactedTestList) {
+                System.out.println(test);
+            }
         }
     }
 }
