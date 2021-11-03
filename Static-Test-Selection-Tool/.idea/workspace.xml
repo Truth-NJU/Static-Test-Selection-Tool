@@ -98,22 +98,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestClean.testClean" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="STARTS_OWN" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="commandTest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="commandTest" />
-      <option name="MAIN_CLASS_NAME" value="commandTest.TestClean" />
-      <option name="METHOD_NAME" value="testClean" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="TestDependency.testDepencyByTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="STARTS_OWN" />
       <extension name="coverage">
@@ -125,6 +109,22 @@
       <option name="PACKAGE_NAME" value="helpersTest" />
       <option name="MAIN_CLASS_NAME" value="helpersTest.TestDependency" />
       <option name="METHOD_NAME" value="testDepencyByTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestImpacted.testImpactedTestList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="STARTS_OWN" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="commandTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="commandTest" />
+      <option name="MAIN_CLASS_NAME" value="commandTest.TestImpacted" />
+      <option name="METHOD_NAME" value="testImpactedTestList" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -149,10 +149,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.main" />
+        <item itemvalue="JUnit.TestImpacted.testImpactedTestList" />
         <item itemvalue="JUnit.TestClassPath.testGetAllClassName" />
         <item itemvalue="JUnit.TestDependency.testDepencyByTest" />
         <item itemvalue="JUnit.TestTDG.testTDG" />
-        <item itemvalue="JUnit.TestClean.testClean" />
       </list>
     </recent_temporary>
   </component>
@@ -181,6 +181,8 @@
       <workItem from="1635917993019" duration="1763000" />
       <workItem from="1635920085546" duration="2000" />
       <workItem from="1635920937295" duration="2255000" />
+      <workItem from="1635924608929" duration="1640000" />
+      <workItem from="1635926398503" duration="451000" />
     </task>
     <servers />
   </component>

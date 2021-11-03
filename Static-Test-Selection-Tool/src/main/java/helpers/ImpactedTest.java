@@ -101,10 +101,10 @@ public class ImpactedTest {
      * @param typeTotestDependencyMap
      * @return
      */
-    public ArrayList<String> findImpactedTest(ArrayList<String> impactedType,
+    public ArrayList<String> findImpactedTest(Map<String,Long> impactedType,
                                               Map<String, Set<String>> typeTotestDependencyMap) {
         ArrayList<String> impactedTest = new ArrayList<>();
-        for (String type : impactedType) {
+        for (String type : impactedType.keySet()) {
             Set<String> tests = typeTotestDependencyMap.get(type);
             for (Iterator it = tests.iterator(); it.hasNext(); ) {
                 impactedTest.add(it.next().toString());

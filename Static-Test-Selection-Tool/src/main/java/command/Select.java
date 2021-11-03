@@ -1,9 +1,6 @@
 package command;
 
-import helpers.CheckSum;
-import helpers.ComputeDepency;
-import helpers.ImpactedTest;
-import helpers.LoadAndStartJdeps;
+import helpers.*;
 
 import java.util.*;
 
@@ -48,19 +45,36 @@ public class Select {
         String path2 = "newCheckSum";
         // 获得受影响的所有类型
         Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
-        // 获得新出现的类型
-        Map<String, Long> newType=impactedTest.getNewType();
 
-        // 去除新出现的类型和删除掉的类型，只显示更改的类型
-        ArrayList<String> changeTypeList=new ArrayList<>();
-        for(String key:changedType.keySet()){
-            if(!newType.containsKey(key)){
-                changeTypeList.add(key);
+
+
+        // 输出受影响的测试
+        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changedType, typeTotestDependencyMapNew);
+
+        ClassPath classPath = new ClassPath();
+        Map<String, String> classpathMap = classPath.getClasspathSet(rootPathNew);
+        // 获得所有类的名称
+        ArrayList<String> allClass = classPath.getAllClassName(classpathMap);
+        // 获得所有测试类的名称
+        ArrayList<String> testClassNew = classPath.getAllTestClassesName(allClass);
+
+        // 获得新添加的测试
+        ClassPath classPath2 = new ClassPath();
+        Map<String, String> classpathMapOld = classPath2.getClasspathSet(rootPathOld);
+        // 获得所有类的名称
+        ArrayList<String> allClassOld = classPath2.getAllClassName(classpathMapOld);
+        // 获得所有测试类的名称
+        ArrayList<String> testClassOld = classPath2.getAllTestClassesName(allClassOld);
+        // 获得新添加的测试，且没有出现在受影响测试的列表中
+        ArrayList<String> newTest=new ArrayList<>();
+        for(String test:testClassNew){
+            if(testClassOld.indexOf(test)==-1 && impactedTestList.indexOf(test)==-1){
+                newTest.add(test);
             }
         }
 
-        // 输出受影响的测试
-        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changeTypeList, typeTotestDependencyMapNew);
+        // 受影响的测试加上新的测试
+        impactedTestList.addAll(newTest);
         //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
         return impactedTestList;
     }

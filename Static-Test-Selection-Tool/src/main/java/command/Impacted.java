@@ -45,27 +45,18 @@ public class Impacted {
 
         // 获得变更的类型(不包括新出现和删除掉的类型，但是这儿包含了新出现的类型，需要删除)
         Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
-        // 获得新出现的类型
-        Map<String, Long> newType=impactedTest.getNewType();
 
-        // 去除新出现的类型和删除掉的类型，只显示更改的类型
-        ArrayList<String> changeTypeList=new ArrayList<>();
-        for(String key:changedType.keySet()){
-            if(!newType.containsKey(key)){
-                changeTypeList.add(key);
-            }
-        }
 
         ClassPath classPath = new ClassPath();
         Map<String, String> classpathMap = classPath.getClasspathSet(rootPathNew);
         // 获得所有类的名称
         ArrayList<String> allClass = classPath.getAllClassName(classpathMap);
         // 获得所有测试类的名称
-        ArrayList<String> testClass = classPath.getAllTestClassesName(allClass);
+        ArrayList<String> testClassNew = classPath.getAllTestClassesName(allClass);
         // 获得不是测试类的类型
         ArrayList<String> commonTypeClass = new ArrayList<>();
         for (int i = 0; i < allClass.size(); i++) {
-            if (testClass.indexOf(allClass.get(i)) == -1) {
+            if (testClassNew.indexOf(allClass.get(i)) == -1) {
                 commonTypeClass.add(allClass.get(i));
             }
         }
@@ -79,7 +70,7 @@ public class Impacted {
             for (String key : typeDep.keySet()) {
                 for (String name : typeDep.get(key)) {
                     // 若该类型依赖的某个类型在变更的类型中出现，则该类型会受到变更的影响，需要输出
-                    if (changeTypeList.indexOf(name)!=-1) {
+                    if (changedType.containsKey(name)) {
                         if (typeImpactedByChange.indexOf(key) == -1)
                             typeImpactedByChange.add(key);
                         break;
@@ -88,25 +79,43 @@ public class Impacted {
             }
         }
 
+
         String temp = ""; // 用来判断结果是否为空，既有没有类型发生变化
-        for (String key : changeTypeList) {
+        for (String key : changedType.keySet()) {
             temp += key;
         }
         for (String key : typeImpactedByChange) {
             temp += key;
         }
 
+
         // 获得受影响的测试
-        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changeTypeList,typeTotestDependencyMapNew);
+        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changedType,typeTotestDependencyMapNew);
         //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
         for (String test : impactedTestList) {
+            temp += test;
+        }
+        // 获得新添加的测试
+        ClassPath classPath2 = new ClassPath();
+        Map<String, String> classpathMapOld = classPath2.getClasspathSet(rootPathOld);
+        // 获得所有类的名称
+        ArrayList<String> allClassOld = classPath2.getAllClassName(classpathMapOld);
+        // 获得所有测试类的名称
+        ArrayList<String> testClassOld = classPath2.getAllTestClassesName(allClassOld);
+        ArrayList<String> newTest=new ArrayList<>();
+        for(String test:testClassNew){
+            if(testClassOld.indexOf(test)==-1 && impactedTestList.indexOf(test)==-1){
+                newTest.add(test);
+            }
+        }
+        for (String test : newTest) {
             temp += test;
         }
         if (Objects.equals(temp, "")) {
             System.out.println("没有类型和测试发生变化");
         } else {
             // 输出变更的类型（不包括删除的类型）
-            for (String key : changeTypeList) {
+            for (String key : changedType.keySet()) {
                 System.out.println(key);
             }
             // 输出受变更影响的类型
@@ -117,6 +126,10 @@ public class Impacted {
             for (String test : impactedTestList) {
                 System.out.println(test);
             }
+            for (String test : newTest) {
+                System.out.println(test);
+            }
         }
+
     }
 }
