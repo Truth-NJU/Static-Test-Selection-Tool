@@ -324,13 +324,13 @@ STARTS原先的开发者们将其实现为插件的形式，他们可以在待�
        ![](./img/diff_user.png)
 
      - select
-       ![](./img/截屏2021-11-03 下午8.14.51.png)
+       ![](./img/1.png)
 
      - starts
-       ![](./img/截屏2021-11-03 下午8.15.32.png)
+       ![](./img/2.png)
 
    - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同
-     ![](./img/截屏2021-11-03 下午8.54.19.png)
+     ![](./img/3.png)
 
 2. 在Clazz包下面增加Woman类，并且在/src/main/test和/src/test/java下面增加对应的测试类（TestWoman）
 
@@ -351,9 +351,9 @@ STARTS原先的开发者们将其实现为插件的形式，他们可以在待�
 
    - 这时候使用标准starts工具运行命令输出的结果如下：
      - diff
-       ![](./img/截屏2021-11-03 下午9.03.38.png)
+       ![](./img/4.png)
    - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同
-     ![](./img/截屏2021-11-03 下午9.26.24.png)
+     ![](./img/5.png)
    - 这时候若将新版本地址作为旧版本代码的地址先输入，旧版本地址作为新版本代码地址后输入。即可以看做代码中删除了Woman和TestWoman，输出如下，符合预期。
-     ![](/Users/taozehua/Static-Test-Selection-Tool/img/截屏2021-11-03 下午9.28.50.png)
+     ![](./img/6.png)
 
