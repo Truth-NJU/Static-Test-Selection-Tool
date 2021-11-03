@@ -36,7 +36,7 @@
    - 在单个文件中STARTS存**储从应用程序中的每个类型到依赖于该类型的测试集的映射**。该文件存储在应用程序根目录下名为.starts的目录中。更准确地说，如果应用程序是一个基于maven的**多模块项目**，那么STARTS会在每个模块下创建多个. starts目录，每个目录都有自己的类型到测试的映射文件，如果是依赖关系导致的，这些类型可以跨模块。在对新修订调用STARTS目标之后，可以打开或关闭存储在磁盘上的校验和。
    - start使用的“类型到测试”存储方式，加上只处理磁盘上的一个文件，极大地提高了选择受影响测试的性能。对测试到类型格式的一种可能的修改是，首先读取所有文件，然后在比较校验和之前将类型到测试的映射(在内存中)颠倒过来。然而,这一修改仍然会产生阅读的成本可能许多文件从磁盘,和它将mapping-reversal过程关键路径从测试开始时到开发人员获得测试results-mapping逆转开始可能发生在一个单独的离线阶段不是在关键路径。
 5. **选择受影响测试**
-   - STARTS使用来自上一个版本的类型到测试依赖关系映射和所有已更改类型集，以查找不受更改影响的测试。然后开始计算受影响测试，将其作为当前修订中的所有测试集与非受影响测试集之间的差值。因此，新添加的测试总是在受影响的测试集中。查找受影响测试不需要在新修订上构造依赖关系图(允许更快地计算受影响测试)。 相反，STARTS读取类型到测试依赖项文件，该文件是根据上一版本中构建的依赖项图计算的。
+   - STARTS使用来自上一个版本的类型到测试依赖关系映射和所有已更改类型集，以查找不受更改影响的测试。然后开始计算受影响测试，将其作为当前修订中的所有测试集与非受影响测试集之间的差值。因此，**新添加的测试总是在受影响的测试集中**。查找受影响测试不需要在新修订上构造依赖关系图(允许更快地计算受影响测试)。 相反，STARTS读取类型到测试依赖项文件，该文件是根据上一版本中构建的依赖项图计算的。
    - 事实上，**STARTS只需要编译时信息就可以找到受影响的测试**，这允许阶段的清晰分离:
      - 分析阶段：查找更改和受影响的测试
      - 执行阶段：运行受影响的测试
@@ -206,4 +206,154 @@ STARTS原先的开发者们将其实现为插件的形式，他们可以在待�
 
 # 5. 测试
 
-1. 
+## 5.1 环境准备
+
+在pom.xml中引入surefire和starts的依赖，方便将自己实现的starts工具的输出与标准starts工具的输出进行对比，判断正确性。
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.17</version>
+        </plugin>
+        <plugin>
+            <groupId>edu.illinois</groupId>
+            <artifactId>starts-maven-plugin</artifactId>
+            <version>1.3</version>
+        </plugin>
+    </plugins>
+</build>
+```
+
+## 5.2 基本项目
+
+测试项目的基本版本由以下几部分构成：
+
+- /src/main/java/Clazz
+
+  - Man类：继承User类
+
+    ```java
+    public class Man extends User {
+        private int id;
+    
+        public Man(){
+            this.id=1;
+            System.out.println("Man");
+        }
+    
+        public int getId() {
+            return id;
+        }
+    }
+    ```
+
+  - User类
+
+    ```java
+    public class User {
+        private int id;
+    
+        public User(){
+            this.id=1;
+            System.out.println("User");
+        }
+    
+        public int getId() {
+            return id;
+        }
+    }
+    ```
+
+- /src/main/java/test
+
+  - TestUser：User类的测试类
+
+    ```java
+    public class TestUser {
+        @Test
+        public void test1(){
+            User user=new User();
+            System.out.println("test01:TestUser");
+        }
+    }
+    ```
+
+  - TestMan：Man类的测试类
+
+    ```java
+    public class TestMan {
+        @Test
+        public void test1() {
+            Man man=new Man();
+            System.out.println("test01:TestMan");
+        }
+    }
+    ```
+
+- /src/test/java目录下的两个测试类与/src/main/java/test，为了方便工具的使用，进行了测试类的复制
+
+## 5.3 测试
+
+测试项目的基本版本进行修改，判断自己实现的starts工具和标准的starts工具的输出是否一样
+
+1. 将User的内容改为如下：
+
+   ```java
+   public class User {
+       private int id;
+       private int s=0;
+   
+       public User(){
+           this.id=1;
+           System.out.println("User");
+       }
+   
+       public int getId() {
+           return id;
+       }
+   }
+   ```
+
+   - 这时候使用标准starts工具运行命令输出的结果如下：
+
+     - diff
+
+       ![](./img/diff_user.png)
+
+     - select
+       ![](./img/截屏2021-11-03 下午8.14.51.png)
+
+     - starts
+       ![](./img/截屏2021-11-03 下午8.15.32.png)
+
+   - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同
+     ![](./img/截屏2021-11-03 下午8.54.19.png)
+
+2. 在Clazz包下面增加Woman类，并且在/src/main/test和/src/test/java下面增加对应的测试类（TestWoman）
+
+   ```java
+   public class Woman {
+       private int id;
+   
+       public Woman(){
+           this.id=1;
+           System.out.println("User");
+       }
+   
+       public int getId() {
+           return id;
+       }
+   }
+   ```
+
+   - 这时候使用标准starts工具运行命令输出的结果如下：
+     - diff
+       ![](./img/截屏2021-11-03 下午9.03.38.png)
+   - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同
+     ![](./img/截屏2021-11-03 下午9.26.24.png)
+   - 这时候若将新版本地址作为旧版本代码的地址先输入，旧版本地址作为新版本代码地址后输入。即可以看做代码中删除了Woman和TestWoman，输出如下，符合预期。
+     ![](/Users/taozehua/Static-Test-Selection-Tool/img/截屏2021-11-03 下午9.28.50.png)
+

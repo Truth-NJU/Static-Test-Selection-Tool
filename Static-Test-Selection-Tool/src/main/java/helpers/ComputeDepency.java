@@ -67,6 +67,7 @@ public class ComputeDepency {
             }
         }
 
+        //System.out.println(testClass);
         // 初始化typeTotestDependencyMap
         for(String type:commonTypeClass){
             Set<String> temp=new HashSet<>();
