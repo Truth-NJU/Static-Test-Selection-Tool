@@ -1,11 +1,6 @@
 package command;
 
-import helpers.ClassPath;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 运行受影响的测试
@@ -36,13 +31,13 @@ public class Starts {
         System.out.println("请在终端使用以下命令重新运行测试类：");
         System.out.println("cd " + rootPathNew);
         for (String impactedTest : impactedTestList) {
-            // 出现点的位置，只要截取类名即可
-            int location=impactedTest.lastIndexOf(".");
-            String testName="";
-            for(int i=location+1;i<impactedTest.length();i++){
-                testName+=impactedTest.charAt(i);
-            }
-            System.out.println("mvn test -Dtest=" + testName);
+//            // 出现点的位置，只要截取类名即可
+//            int location=impactedTest.lastIndexOf(".");
+//            String testName="";
+//            for(int i=location+1;i<impactedTest.length();i++){
+//                testName+=impactedTest.charAt(i);
+//            }
+            System.out.println("mvn test -Dtest=" + impactedTest);
         }
     }
 

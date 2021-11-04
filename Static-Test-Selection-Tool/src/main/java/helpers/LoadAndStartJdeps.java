@@ -109,17 +109,45 @@ public final class LoadAndStartJdeps implements StartsConstants {
         // 按行分割jdepsOutput
         List<String> lines = Arrays.asList(jdepsOutput.toString().split(System.lineSeparator()));
         for (String line : lines) {
-            //System.out.println(line);
             String[] parts = line.split("->");
             String clazz = parts[0].trim();
             if (clazz.startsWith(CLASSES) || clazz.startsWith(TEST_CLASSES) || clazz.endsWith(JAR_EXTENSION)) {
                 continue;
             }
+            // 截取类名
+            // 最后一次出现点的位置
+            if(clazz.contains(".")) {
+                int maxI = 0;
+                for (int i = 0; i < clazz.length(); i++) {
+                    if (clazz.charAt(i) == '.') {
+                        if (maxI < i) maxI = i;
+                    }
+                }
+                clazz = "";
+                for (int i = maxI + 1; i < parts[0].trim().length(); i++) {
+                    clazz += parts[0].trim().charAt(i);
+                }
+            }
             String right = parts[1].trim().split(" ")[0];
-            if (deps.keySet().contains(clazz)) {
-                deps.get(clazz).add(right);
-            } else {
-                deps.put(clazz, new HashSet<>(Arrays.asList(right)));
+            // TODO 如果right是别的开头，系统类，不是自己写的类
+            if(!right.startsWith("java") && !right.startsWith("org")) {
+                if(right.contains(".")) {
+                    int maxI = 0;
+                    for (int i = 0; i < right.length(); i++) {
+                        if (right.charAt(i) == '.') {
+                            if (maxI < i) maxI = i;
+                        }
+                    }
+                    right = "";
+                    for (int i = maxI + 1; i <parts[1].trim().split(" ")[0].length(); i++) {
+                        right += parts[1].trim().split(" ")[0].charAt(i);
+                    }
+                }
+                if (deps.keySet().contains(clazz)) {
+                    deps.get(clazz).add(right);
+                } else {
+                    deps.put(clazz, new HashSet<>(Arrays.asList(right)));
+                }
             }
         }
         return deps;

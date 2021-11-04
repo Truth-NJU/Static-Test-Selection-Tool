@@ -40,25 +40,9 @@ public class ClassPath {
                     String path = f.getAbsolutePath();
                     if (path.endsWith(".java")) {
                         String[] temp = path.split("/");
-                        // 第一次出现java的位置
-                        int firstJava = 0;
-                        for (int j = temp.length - 1; j >= 0; j--) {
-                            if (Objects.equals(temp[j], "java")) {
-                                firstJava = j;
-                                break;
-                            }
-                        }
-                        firstJava++;
                         String classname = "";
-                        for (int i = firstJava; i < temp.length - 1; i++) {
-                            classname += temp[i];
-                            classname += ".";
-                        }
                         classname += temp[temp.length - 1];
-                        // 过滤掉/test/java下的测试类
-                        if (!classname.startsWith("T")) {
-                            classpathMap.put(classname.replace(".java", ""), path);
-                        }
+                        classpathMap.put(classname.replace(".java", ""), path);
                     }
                 }
             }
@@ -91,11 +75,9 @@ public class ClassPath {
      */
     public ArrayList<String> getAllTestClassesName(ArrayList<String> classes) {
         for (int i = 0; i < classes.size(); i++) {
-            if (classes.get(i).contains(".")) {
-                String lowerCaseStr = classes.get(i).toLowerCase();
-                if (lowerCaseStr.contains("test")) {
-                    testClasses.add(classes.get(i));
-                }
+            String lowerCaseStr = classes.get(i).toLowerCase();
+            if (lowerCaseStr.contains("test")) {
+                testClasses.add(classes.get(i));
             }
         }
         return testClasses;

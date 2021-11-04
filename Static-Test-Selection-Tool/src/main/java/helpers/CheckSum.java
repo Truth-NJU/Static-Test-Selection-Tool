@@ -96,8 +96,23 @@ public class CheckSum implements StartsConstants {
     public void writeCheckSumToFile(Map<String, Long> checkSumMap, String filename) throws IOException {
         BufferedWriter out = new BufferedWriter(new FileWriter(filename));
         for(String key:checkSumMap.keySet()){
-            String str=key+" "+checkSumMap.get(key)+"\n";
-            out.write(str);
+            if(key.contains(".")) {
+                int maxI = 0;
+                for (int i = 0; i < key.length(); i++) {
+                    if (key.charAt(i) == '.') {
+                        if (maxI < i) maxI = i;
+                    }
+                }
+                String keyRes = "";
+                for (int i = maxI + 1; i <key.length(); i++) {
+                    keyRes += key.charAt(i);
+                }
+                String str=keyRes+" "+checkSumMap.get(key)+"\n";
+                out.write(str);
+            }else {
+                String str = key + " " + checkSumMap.get(key) + "\n";
+                out.write(str);
+            }
         }
         out.close();
     }

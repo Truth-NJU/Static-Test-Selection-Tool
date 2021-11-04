@@ -12,7 +12,7 @@ public class TestClassPath {
     @Test
     public void testClassPath(){
         ClassPath classPath=new ClassPath();
-        String path="/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01/src";
+        String path="/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01";
         Map<String,String> classPathMap=classPath.getClasspathSet(path);
         for (String key : classPathMap.keySet()) {
             String value = classPathMap.get(key);

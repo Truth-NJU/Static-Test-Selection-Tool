@@ -90,6 +90,27 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 ## 3. 使用说明
 
+### 3.1 使用注意事项（规范）
+
+- 用户的项目中在标记为源码根和测试源码根的目录下都需要写测试类，即用户将测试源码根的目录下的测试类（测试用例）复制到源码根目录下。方便jdeps的依赖关系的获取以及surefire插件执行受到代码变更影响的测试用例。示例项目结构如下图：
+  ![](./img/7.png)
+
+- 由于没有实现成插件的形式，所以需要使用者们自己使用命令进入修改后的代码的目录，再使用`mvn test -Dtest=类名`运行受影响的测试。用户需要在他们的项目中引入surefire插件的maven依赖，在pom.xml中加入如下依赖：
+
+  ```xml
+  <plugin>  
+    <groupId>org.apache.maven.plugins</groupId>  
+    <artifactId>maven-surefire-plugin</artifactId>  
+    <version>2.17</version>  
+  </plugin> 
+  ```
+
+- 用户需要确保电脑中的mvn命令是可用的
+
+- 项目用户必须保存项目的旧版本和新版本，提供新旧版本的绝对路径，以便STARTS进行比较。
+
+### 3.2 使用方法
+
 1. 运行main.java，按照输出的提示输入旧版本项目的绝对路径地址和jar包地址、修改后新版本项目的绝对路径地址和jar包地址。输入完成后就会提示用户STARTS所具有的可以使用的命令，并提示用户继续输入命令。
 
    ![](./img/runMain.png)
@@ -123,21 +144,4 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 8. 输入exit命令退出STARTS
 
-9. **注意**：
-
-   - 由于没有实现成插件的形式，所以需要使用者们自己使用命令进入修改后的代码的目录，再使用`mvn test -Dtest=类名`运行受影响的测试。用户需要在他们的项目中引入surefire插件的maven依赖，在pom.xml中加入如下依赖：
-
-     ```xml
-     <plugin>  
-       <groupId>org.apache.maven.plugins</groupId>  
-       <artifactId>maven-surefire-plugin</artifactId>  
-       <version>2.17</version>  
-     </plugin> 
-     ```
-
-   - 用户需要确保电脑中的mvn命令是可用的
-
-   - 项目用户必须保存项目的旧版本和新版本，以便STARTS进行比较。
-
-   - 用户的项目中在标记为源码根和测试源码根的目录下都需要写测试类，即用户将测试源码根的目录下的测试类（测试用例）复制到源码根目录下（**复制到源码根目录下的所有测试必须放在以名叫test的包中，且所有的测试类都以Test开头**），方便jdeps的依赖关系的获取以及surefire插件执行受到代码变更影响的测试用例
 
