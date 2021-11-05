@@ -19,6 +19,12 @@ public class ClassPath {
     // 存储所有测试类的类名
     private ArrayList<String> testClasses = new ArrayList<>();
 
+
+    /**
+     * 根据项目根路径获得所有的类名->绝对路径，存入classpathMap
+     * @param rootPath
+     * @return classpathMap
+     */
     public Map<String, String> getClasspathSet(String rootPath) {
         File file = new File(rootPath);
         File[] files = file.listFiles();
@@ -76,6 +82,7 @@ public class ClassPath {
     public ArrayList<String> getAllTestClassesName(ArrayList<String> classes) {
         for (int i = 0; i < classes.size(); i++) {
             String lowerCaseStr = classes.get(i).toLowerCase();
+            // 包含test就认为是一个测试类，命名规范
             if (lowerCaseStr.contains("test")) {
                 testClasses.add(classes.get(i));
             }

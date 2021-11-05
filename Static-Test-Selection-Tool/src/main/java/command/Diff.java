@@ -22,6 +22,8 @@ public class Diff {
 //        Map<String, Set<String>> depMapOld = LoadAndStartJdeps.runJdeps(argold);
 //        // 旧版本的类型到依赖于该类型的测试的映射
 //        Map<String, Set<String>> typeTotestDependencyMapOld = computeDepency.typeTotestDependency(rootPathOld, depMapOld);
+
+        // 计算旧版本的校验和并写入文件
         CheckSum checkSum = new CheckSum();
         Map<String, Long> resMapOld = checkSum.setCheckSumMap(rootPathOld);
         // 将校验和写入文件
@@ -35,6 +37,7 @@ public class Diff {
 //        // 旧版本的类型到依赖于该类型的测试的映射
 //        Map<String, Set<String>> typeTotestDependencyMapNew = computeDepency2.typeTotestDependency(rootPathNew, depMapNew);
 
+        // 计算新版本的校验和并写入文件
         CheckSum checkSum2 = new CheckSum();
         Map<String, Long> resMapNew = checkSum2.setCheckSumMap(rootPathNew);
         // 将校验和写入文件

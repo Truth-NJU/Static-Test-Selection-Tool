@@ -36,6 +36,7 @@ public class ImpactedTest {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         String str = null;
+        // 读出旧的校验和文件中所有的类和校验和的映射
         while ((str = bufferedReader.readLine()) != null) {
             String[] temp = str.split(" ");
             String typeName = temp[0];
@@ -52,6 +53,7 @@ public class ImpactedTest {
         BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(inputStream1));
 
         String str1 = null;
+        // 读出新的校验和文件中所有的类和校验和的映射
         while ((str1 = bufferedReader1.readLine()) != null) {
             String[] temp = str1.split(" ");
             String typeName = temp[0];
@@ -105,6 +107,7 @@ public class ImpactedTest {
                                               Map<String, Set<String>> typeTotestDependencyMap) {
         ArrayList<String> impactedTest = new ArrayList<>();
         for (String type : impactedType.keySet()) {
+            // 获得该类型依赖的所有的测试，添加到结果中
             Set<String> tests = typeTotestDependencyMap.get(type);
             for (Iterator it = tests.iterator(); it.hasNext(); ) {
                 impactedTest.add(it.next().toString());

@@ -20,6 +20,7 @@ public class CreateTDGWithYasgl implements StartsConstants {
      */
     public DirectedGraph<String> makeGraph(Map<String, Set<String>> deps){
         DirectedGraphBuilder<String> builder=new DirectedGraphBuilder<>();
+        // 将jdeps的依赖分析结果的作为边添加到图中
         for(String key:deps.keySet()){
             for(String val:deps.get(key)){
                 builder.addEdge(key,val);
@@ -37,7 +38,9 @@ public class CreateTDGWithYasgl implements StartsConstants {
     public Map<String, Set<String>> getTransitiveClosurePerClass(DirectedGraph<String> graph,
                                                                         List<String> classesToAnalyze) {
         Map<String, Set<String>> transitiveClosurePerClass = new HashMap<>();
+        // 遍历每一个待分析的类
         for (String test : classesToAnalyze) {
+            // 获得该类依赖的所有其他的类
             Set<String> deps = computeReachabilityFromChangedClasses(
                     new HashSet<>(Arrays.asList(test)), graph);
             deps.add(test);

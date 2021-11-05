@@ -14,7 +14,7 @@ public class ComputeDepency {
 
 
     /**
-     * 计算一个测试依赖的类型
+     * 计算一个测试类依赖的类型
      *
      * @param testName
      * @param deps
@@ -34,7 +34,7 @@ public class ComputeDepency {
 
         for (String key : resDepency.keySet()) {
             for (String val : resDepency.get(key)) {
-                // 得到该类型依赖的测试类型
+                // 得到该类型依赖的类型(不包括它本身)
                 if (!Objects.equals(val, testName)) {
                     set.add(val);
                 }
@@ -59,7 +59,7 @@ public class ComputeDepency {
         ArrayList<String> testClass=classPath.getAllTestClassesName(allClass);
 
 
-        // 获得剩余的类型
+        // 获得不是测试类的类型
         ArrayList<String> commonTypeClass=new ArrayList<>();
         for(int i=0;i<allClass.size();i++){
             if(testClass.indexOf(allClass.get(i))==-1){

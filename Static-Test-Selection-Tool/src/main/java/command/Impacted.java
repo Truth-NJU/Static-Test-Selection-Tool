@@ -90,7 +90,7 @@ public class Impacted {
 
 
         // 获得受影响的测试
-        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changedType,typeTotestDependencyMapNew);
+        ArrayList<String> impactedTestList = impactedTest.findImpactedTest(changedType, typeTotestDependencyMapNew);
         //ArrayList<String> impactedTestList = impactedTest.findImpactedTest(impactedType, typeTotestDependencyMapOld);
         for (String test : impactedTestList) {
             temp += test;
@@ -102,9 +102,10 @@ public class Impacted {
         ArrayList<String> allClassOld = classPath2.getAllClassName(classpathMapOld);
         // 获得所有测试类的名称
         ArrayList<String> testClassOld = classPath2.getAllTestClassesName(allClassOld);
-        ArrayList<String> newTest=new ArrayList<>();
-        for(String test:testClassNew){
-            if(testClassOld.indexOf(test)==-1 && impactedTestList.indexOf(test)==-1){
+        ArrayList<String> newTest = new ArrayList<>();
+        // 遍历所有的新出现的测试类，若不在受影响的测试列表中就要加入
+        for (String test : testClassNew) {
+            if (testClassOld.indexOf(test) == -1 && impactedTestList.indexOf(test) == -1) {
                 newTest.add(test);
             }
         }
@@ -126,6 +127,7 @@ public class Impacted {
             for (String test : impactedTestList) {
                 System.out.println(test);
             }
+            // 输出新增加的测试
             for (String test : newTest) {
                 System.out.println(test);
             }
