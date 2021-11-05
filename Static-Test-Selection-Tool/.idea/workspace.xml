@@ -114,17 +114,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestClean" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestClassPath.testGetAllTestClassName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="STARTS_OWN" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="commandTest.*" />
+          <option name="PATTERN" value="helpersTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="commandTest" />
-      <option name="MAIN_CLASS_NAME" value="commandTest.TestClean" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="helpersTest" />
+      <option name="MAIN_CLASS_NAME" value="helpersTest.TestClassPath" />
+      <option name="METHOD_NAME" value="testGetAllTestClassName" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -149,9 +150,9 @@
       <list>
         <item itemvalue="Application.main" />
         <item itemvalue="JUnit.TestClassPath.testClassPath" />
-        <item itemvalue="JUnit.TestClassPath.testGetAllClassName" />
         <item itemvalue="JUnit.TestJdeps.testOutput" />
-        <item itemvalue="JUnit.TestClean" />
+        <item itemvalue="JUnit.TestClassPath.testGetAllClassName" />
+        <item itemvalue="JUnit.TestClassPath.testGetAllTestClassName" />
       </list>
     </recent_temporary>
   </component>
@@ -184,6 +185,7 @@
       <workItem from="1635926398503" duration="451000" />
       <workItem from="1635940218925" duration="4590000" />
       <workItem from="1636021392299" duration="2189000" />
+      <workItem from="1636023753619" duration="30000" />
     </task>
     <servers />
   </component>
