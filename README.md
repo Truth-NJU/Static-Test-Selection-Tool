@@ -52,16 +52,26 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 ```
 
 1. **/src/main/java/command**：封装STARTS的六大功能
-   - Help 列出STARTS所有的功能。
+   - Help 列出STARTS所有的功能：
+     - 简单的输出了STARTS的所有功能
    - Diff 显示自上次运行STARTS以来更改的所有Java类型(包括类、接口和枚举)。
+     - 根据旧版项目和新版项目的根路径计算项目的所有类和其校验和的映射关系，并分别写入文件oldCheckSum和newCheckSum
+     - 比较新旧校验和文件获得变更的类型并输出（这里变更的类型不包括新出现的类型和删除掉的类型）
    - Impacted 显示所有受变更影响的类型(不仅仅是测试类)。
-     - 根据已经更改的类型分析得到受这些更改的类型影响的类型
+     - 使用和diff相同的步骤获得变更的类型（这里变更的类型包括新出现的类型）。
+     - 获得项目中所有不是测试类的类名，存在commonTypeClass中。
+     - 遍历commonTypeClass得到每一个类名，调用ComputeDepency类的testTotypeDependency方法获得该类依赖所有的类型。如果该类依赖的某个类型包含在变更的类型中，则认为该类受到了变更类型的影响，需要输出。
+     - 根据变更的类型调用ImpactedTest类的findImpactedTest方法计算受变更影响的测试类并输出
    - Select 显示(但不运行)自上次STARTS运行以来受更改影响的测试类
+     - 使用和diff相同的步骤获得变更的类型（这里变更的类型包括新出现的类型）。
+     - 根据变更的类型调用ImpactedTest类的findImpactedTest方法计算受变更影响的测试类并输出
+     - 获得新版本中新出现的测试类，若这些新的测试类不在变更影响的测试类中出现也需要加入到select命令输出的结果中
    - Starts 运行受影响的测试
+     - 根据select命令输出的受影响的测试列表生成相应的执行测试的命令并输出
      - 因为没有实现成插件的形式，所以不能直接在用户的项目中运行测试。而是为用户提供了运行测试的所需要的命令，用户需要在自己的终端或者直接在项目目录下运行命令，观察测试的结果。
        ![](/Users/taozehua/Static-Test-Selection-Tool/img/starts.png)
    - Clean 重新设置STARTS，以便在下一次运行时，认为所有类型都已更改(如果使用starts:starts，则选择所有测试运行)。
-     - 所以使用了序列化来实现clean的功能。使用一个status文本文件来存储当前STARTS的状态。如果status的内容为true，就代表用户上一次运行STARTS时使用了clean命令。那么这次运行时，STARTS会认为所有的类型都已经更改，需要选取所有测试运行。如果status的内容为false，就代表处于正常的状态，正常运行。
+     - 使用了序列化来实现clean的功能。使用一个status文本文件来存储当前STARTS的状态。如果status的内容为true，就代表用户上一次运行STARTS时使用了clean命令。那么这次运行时，STARTS会认为所有的类型都已经更改，需要选取所有测试运行。如果status的内容为false，就代表处于正常的状态，正常运行。
      - 每次用户输入clean命令，会将status的内容改写为true。下一次运行STARTS时，STARTS会认为所有的类型都已经更改，需要选取所有测试运行。
 2. **/src/main/java/constants**：定义了各种常量，方便后续的使用
 3. **/src/main/java/helpers**：实现了STARTS运行需要的各种工具类和方法
@@ -70,19 +80,19 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      - makeGraph方法：根据LoadAndStartJdeps类使用jdeps生成的各个类之间的依赖关系，使用yasgl自定义图形库来构造TDG（类之间的依赖关系图）
      - getTransitiveClosurePerClass方法和computeReachabilityFromChangedClasses方法：使用makeGraph得到的类之间的依赖关系图计算得到待分析类列表中的每一个类的依赖传递闭包。（即每一个类和它依赖的所有类的映射关系）
    - ClassPath类：
-     - getClasspathSet方法和getpath方法：根据项目的根目录路径获得该根目录下所有类和它们对应的绝对路径的映射
-     - getAllClassName方法：获得项目中所有的类的名字
-     - getAllTestClassesName方法：获得待测项目中的所有测试类的名字
+     - getClasspathSet方法和getpath方法：根据项目的根目录路径获得该根目录下所有类的类名和它们对应的绝对路径的映射，存入classpathMap中
+     - getAllClassName方法：根据classpathMap获得项目中所有的类的名字
+     - getAllTestClassesName方法：根据classpathMap获得待测项目中的所有测试类的名字
    - ComputeDepency类：
-     - testTotypeDependency方法：通过测试的名字和jdeps分析得到的依赖构建的TDG图计算该测试类所依赖的所有类型。
-     - typeTotestDependency方法：由于STARTS采用“类型到依赖于该类型的所有测试“的存储方式，所以我们需要对testTotypeDependency方法得到的测试到该测试依赖的类型的映射进行反转，并且通过项目的根路径分析得到项目中所有类型到依赖于该类型的测试的映射关系。
+     - testTotypeDependency方法：通过测试类或者普通类的名字和jdeps分析得到的依赖构建的TDG图计算该测试类所依赖的所有类型。
+     - typeTotestDependency方法：由于STARTS反转了依赖存储的形式，采用“类型到依赖于该类型的所有测试“的存储方式，所以我们需要对testTotypeDependency方法得到的测试到该测试依赖的类型的映射进行反转，并且通过项目的根路径分析得到项目中所有类型到依赖于该类型的测试的映射关系。
    - CheckSum类：
      - getSingleCheckSum方法和getFileCRCCode方法：根据文件的路径计算文件的校验和。
      - getCheckSum方法：根据文件的路径列表，计算每一个文件的校验和并且存入checkSumMap中。
      - setCheckSumMap方法：计算一个项目中所有类型（除去测试类）和对应校验和的映射
      - writeCheckSumToFile方法：将计算得到的校验和写入文件
    - ImpactedTest类：
-     - readFileAndCompare方法：比较新旧校验和文件，找出已更改的的类型
+     - readFileAndCompare方法：比较新旧校验和文件，找出已更改的类型
      - findImpactedTest方法：根据已更改的类型和项目中所有类型到依赖于该类型的测试的映射关系找到受影响的测试
 4. **/src/main/java/main.java**：项目的启动代码存放的地方，负责提示用户进行输入，并根据用户的输入的命令提供相应的输出作为执行的结果。
 5. **/src/test/java/helpersTest**：对/src/main/java/helpers下各个工具类的测试
