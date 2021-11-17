@@ -178,7 +178,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
    - Starts 运行受影响的测试
      - 根据select命令输出的受影响的测试列表生成相应的执行测试的命令并输出
      - 因为没有实现成插件的形式，所以不能直接在用户的项目中运行测试。而是为用户提供了运行测试的所需要的命令，用户需要在自己的终端或者直接在项目目录下运行命令，观察测试的结果。
-       ![](/Users/taozehua/Static-Test-Selection-Tool/img/starts.png)
+       ![](./img/starts.png)
      
    - Clean 重新设置STARTS，以便在下一次运行时，认为所有类型都已更改(如果使用starts:starts，则选择所有测试运行)。
      - 使用了序列化来实现clean的功能。使用一个status文本文件来存储当前STARTS的状态。如果status的内容为true，就代表用户上一次运行STARTS时使用了clean命令。那么这次运行时，STARTS会认为所有的类型都已经更改，需要选取所有测试运行。如果status的内容为false，就代表处于正常的状态，正常运行。
