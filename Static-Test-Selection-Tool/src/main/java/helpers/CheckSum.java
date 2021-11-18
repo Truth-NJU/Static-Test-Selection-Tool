@@ -77,7 +77,7 @@ public class CheckSum implements StartsConstants {
 
 
     /**
-     * 获得文件的CRC校验码
+     * 获得文件的CRC校验和
      *
      * @param path
      * @return

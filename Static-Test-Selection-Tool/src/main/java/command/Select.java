@@ -45,7 +45,15 @@ public class Select {
         String path2 = "newCheckSum";
         // 获得受影响的所有类型
         Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
-
+        // 获得新出现的类型
+        Map<String, Long> newType = impactedTest.getNewType();
+        // 去除新出现的类型和删除掉的类型，只显示更改的类型
+        for (String key : changedType.keySet()) {
+            // 若是新出现的类型就删除掉
+            if (newType.containsKey(key)) {
+                changedType.remove(key);
+            }
+        }
 
 
         // 输出受影响的测试
@@ -66,9 +74,9 @@ public class Select {
         // 获得所有测试类的名称
         ArrayList<String> testClassOld = classPath2.getAllTestClassesName(allClassOld);
         // 获得新添加的测试，且没有出现在受影响测试的列表中
-        ArrayList<String> newTest=new ArrayList<>();
-        for(String test:testClassNew){
-            if(testClassOld.indexOf(test)==-1 && impactedTestList.indexOf(test)==-1){
+        ArrayList<String> newTest = new ArrayList<>();
+        for (String test : testClassNew) {
+            if (testClassOld.indexOf(test) == -1 && impactedTestList.indexOf(test) == -1 && newTest.indexOf(test) == -1) {
                 newTest.add(test);
             }
         }

@@ -2,3 +2,17 @@
 /Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01/out/artifacts/test01_jar/test01.jar
 /Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test03
 /Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test03/out/artifacts/test03_jar/test03.jar
+
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04/out/artifacts/untitled2_jar
+
+
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04(改1)
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04(改1)/out/artifacts/untitled2_jar/untitled2.jar
+
+
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04(改2)
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04(改2)/out/artifacts/untitled2_jar/untitled2.jar
+
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04(改3)
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test04(改3)/out/artifacts/untitled2_jar/untitled2.jar

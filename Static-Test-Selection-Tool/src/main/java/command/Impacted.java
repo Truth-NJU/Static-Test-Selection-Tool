@@ -43,9 +43,18 @@ public class Impacted {
         String path1 = "oldCheckSum";
         String path2 = "newCheckSum";
 
-        // 获得变更的类型(不包括新出现和删除掉的类型，但是这儿包含了新出现的类型，需要删除)
+        // 获得变更的类型
         Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
+        // 获得新出现的类型
+        Map<String, Long> newType = impactedTest.getNewType();
 
+        // 去除新出现的类型和删除掉的类型，只显示更改的类型
+        for (String key : changedType.keySet()) {
+            // 若是新出现的类型就删除掉
+            if (newType.containsKey(key)) {
+                changedType.remove(key);
+            }
+        }
 
         ClassPath classPath = new ClassPath();
         Map<String, String> classpathMap = classPath.getClasspathSet(rootPathNew);
@@ -95,7 +104,8 @@ public class Impacted {
         for (String test : impactedTestList) {
             temp += test;
         }
-        // 获得新添加的测试
+
+        /*  // 获得新添加的测试
         ClassPath classPath2 = new ClassPath();
         Map<String, String> classpathMapOld = classPath2.getClasspathSet(rootPathOld);
         // 获得所有类的名称
@@ -112,6 +122,20 @@ public class Impacted {
         for (String test : newTest) {
             temp += test;
         }
+        */
+        ClassPath classPath2 = new ClassPath();
+        Map<String, String> classpathMapOld = classPath2.getClasspathSet(rootPathOld);
+        // 获得所有类的名称
+        ArrayList<String> allClassOld = classPath2.getAllClassName(classpathMapOld);
+        // 获得所有测试类的名称
+        ArrayList<String> testClassOld = classPath2.getAllTestClassesName(allClassOld);
+        ArrayList<String> newTest = new ArrayList<>();
+        // 遍历所有的新出现的测试类，若不在受影响的测试列表中就要加入
+        for (String test : testClassNew) {
+            if (testClassOld.indexOf(test) == -1) {
+                newTest.add(test);
+            }
+        }
         if (Objects.equals(temp, "")) {
             System.out.println("没有类型和测试发生变化");
         } else {
@@ -123,14 +147,16 @@ public class Impacted {
             for (String key : typeImpactedByChange) {
                 System.out.println(key);
             }
-            // 输出受影响的测试
+            // 输出受影响的测试，不包括新出现的测试
             for (String test : impactedTestList) {
-                System.out.println(test);
+                if(!newTest.contains(test)) {
+                    System.out.println(test);
+                }
             }
-            // 输出新增加的测试
-            for (String test : newTest) {
-                System.out.println(test);
-            }
+//            // 输出新增加的测试
+//            for (String test : newTest) {
+//                System.out.println(test);
+//            }
         }
 
     }

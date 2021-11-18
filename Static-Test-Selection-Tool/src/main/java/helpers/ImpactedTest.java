@@ -92,6 +92,7 @@ public class ImpactedTest {
     public ArrayList<String> getDeleteType() {
         return this.deleteType;
     }
+
     public Map<String, Long> getNewType() {
         return this.newType;
     }
@@ -103,11 +104,11 @@ public class ImpactedTest {
      * @param typeTotestDependencyMap
      * @return
      */
-    public ArrayList<String> findImpactedTest(Map<String,Long> impactedType,
+    public ArrayList<String> findImpactedTest(Map<String, Long> impactedType,
                                               Map<String, Set<String>> typeTotestDependencyMap) {
         ArrayList<String> impactedTest = new ArrayList<>();
         for (String type : impactedType.keySet()) {
-            // 获得该类型依赖的所有的测试，添加到结果中
+            // 获得依赖于该类型的所有测试，添加到结果中
             Set<String> tests = typeTotestDependencyMap.get(type);
             for (Iterator it = tests.iterator(); it.hasNext(); ) {
                 impactedTest.add(it.next().toString());
