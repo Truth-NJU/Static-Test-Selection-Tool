@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ekstazi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ekstazi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="test01:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="74846c7a-5786-4b79-9393-7c0ce11d3fbf" name="默认更改列表" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="/Library/apache-maven-3.6.3/conf/repository" />
+        <option name="mavenHome" value="/Library/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="/Library/apache-maven-3.6.3/conf/settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+        <option name="jdkForImporter" value="1.8" />
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="1.8" />
+    <option name="vmOptions" value="archetypeCatalog=internal" />
+  </component>
+  <component name="ProjectId" id="1zV43ExNt9zCAh66cIsvY07QZz5" />
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java" />
+    <property name="project.structure.last.edited" value="模块" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/test/java" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+      <recent name="test" />
+      <recent name="Clazz" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java" />
+      <recent name="$PROJECT_DIR$/src/test/java" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.TestMan">
+    <configuration name="所有在 test01" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="test01" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestMan" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="test01" />
+      <option name="PACKAGE_NAME" value="s.a" />
+      <option name="MAIN_CLASS_NAME" value="s.a.TestMan" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestMan.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="test01" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestMan" />
+      <option name="METHOD_NAME" value="test1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="test01" />
+      <option name="PACKAGE_NAME" value="s.a" />
+      <option name="MAIN_CLASS_NAME" value="s.a.TestUser" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestUser.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="test01" />
+      <option name="PACKAGE_NAME" value="s.a" />
+      <option name="MAIN_CLASS_NAME" value="s.a.TestUser" />
+      <option name="METHOD_NAME" value="test1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.TestMan" />
+        <item itemvalue="JUnit.TestMan.test1" />
+        <item itemvalue="JUnit.所有在 test01" />
+        <item itemvalue="JUnit.TestUser.test1" />
+        <item itemvalue="JUnit.TestUser" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="74846c7a-5786-4b79-9393-7c0ce11d3fbf" name="默认更改列表" comment="" />
+      <created>1634219744001</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1634219744001</updated>
+      <workItem from="1634219745356" duration="587000" />
+      <workItem from="1634287297614" duration="2279000" />
+      <workItem from="1634451423409" duration="77000" />
+      <workItem from="1634451633637" duration="15000" />
+      <workItem from="1634615923461" duration="39000" />
+      <workItem from="1635841283590" duration="50000" />
+      <workItem from="1635841340462" duration="752000" />
+      <workItem from="1635842873831" duration="624000" />
+      <workItem from="1635906781332" duration="109000" />
+      <workItem from="1635906983932" duration="84000" />
+      <workItem from="1635907131939" duration="2049000" />
+      <workItem from="1635915981240" duration="1427000" />
+      <workItem from="1635917683350" duration="2347000" />
+      <workItem from="1635920081399" duration="2000" />
+      <workItem from="1635921171534" duration="1542000" />
+      <workItem from="1635923112667" duration="813000" />
+      <workItem from="1635924536574" duration="1324000" />
+      <workItem from="1635926622582" duration="196000" />
+      <workItem from="1635940267577" duration="4354000" />
+      <workItem from="1636021207313" duration="1331000" />
+      <workItem from="1636023471207" duration="117000" />
+      <workItem from="1636076409708" duration="326000" />
+      <workItem from="1637241679993" duration="70000" />
+      <workItem from="1637241766433" duration="254000" />
+      <workItem from="1637244685762" duration="26000" />
+      <workItem from="1637244758937" duration="8000" />
+      <workItem from="1637244820525" duration="75000" />
+      <workItem from="1637246229211" duration="6000" />
+      <workItem from="1637246294815" duration="202000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/test01$_test01.ic" NAME="所有在 test01 Coverage Results" MODIFIED="1635940861945" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>
