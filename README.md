@@ -131,7 +131,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
        }
        ```
      
-     - 根据变更的类型调用ImpactedTest类的findImpactedTest方法计算受变更影响的测试类并输出
+     - 根据变更的类型调用ImpactedTest类的findImpactedTest方法计算受变更影响的测试类并输出。注意这里不会输出新出现的测试。
      
        ```java
        // 获得受影响的测试
@@ -139,7 +139,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
        ```
      
    - Select 显示(但不运行)自上次STARTS运行以来受更改影响的测试类
-     - 使用和Diff类似的步骤获得变更的类型。由于新出现的测试类一定需要被选择执行，这里变更的类型changedType包括新出现的类型。
+     - 使用和Diff类似的步骤获得变更的类型。
      
      - 根据变更的类型调用ImpactedTest类的findImpactedTest方法计算受变更影响的测试类并输出
      
