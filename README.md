@@ -459,7 +459,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 #### 3.1.2 项目详情
 
-第一个用来测试的项目的基本版本由以下几部分构成：（见代码/test/test01）
+第一个用来测试的项目的基本版本由以下几部分构成：（代码见/test/test01）
 
 - /src/main/java/Clazz
 
@@ -593,7 +593,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 #### 3.2.1 项目详情
 
-项目中一共包含20个类，类之间包含较为复杂的依赖关系。具体如下：
+项目中一共包含20个类，类之间包含较为复杂的依赖关系。具体如下：(代码见/test/test04)
 
 - class1依赖于class2和class8
 - class3依赖于class5和class6
@@ -613,11 +613,11 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 对项目分别进行以下修改，进行测试。
 
-1. 修改class2，在class2中增加了`int a;`代码，这时候测试输出如下：<img src="./img/8.png" style="zoom:45%;" />
+1. 修改class2，在class2中增加了`int a;`代码，这时候测试输出如下：（代码见/test/test04 (改1)）<img src="./img/8.png" style="zoom:45%;" />
    diff输出变更的类型，只有class2发生变更，因此输出class2；impacted输出受变更的类型影响的类型（不仅仅包括测试），class1依赖于class2，test1测试class1，test2测试class2，因此它们都会受到变更的类型class2的影响，所以都会被impacted输出；select则会选择test1和test2。符合预期输出。
-2. 修改class6，在class6中增加了`int a;`代码，这时候测试输出如下：<img src="./img/9.png" style="zoom:45%;" />
+2. 修改class6，在class6中增加了`int a;`代码，这时候测试输出如下：（代码见/test/test04 (改2)）<img src="./img/9.png" style="zoom:45%;" />
    diff输出变更的类型，只有class6发生变更，因此输出class6；impacted输出受变更的类型影响的类型（不仅仅包括测试），class3依赖于class6，test2测试class3，因此它们都会受到变更的类型class6的影响，所以都会被impacted输出；select则会选择test2。符合预期输出。
-3. 修改class7，在class7中增加了`int a;`代码，这时候测试输出如下：<img src="./img/10.png" style="zoom:45%;" />
+3. 修改class7，在class7中增加了`int a;`代码，这时候测试输出如下：（代码见/test/test04 (改3)）<img src="./img/10.png" style="zoom:45%;" />
    diff输出变更的类型，只有class7发生变更，因此输出class7；impacted输出受变更的类型影响的类型（不仅仅包括测试），但是class7没有被任何类型所依赖，所以impacted只会输出成lass本身；select则不会选择任何测试。符合预期输出。
 
 以上测试用例均在动态的测试用例选择工具Ekstazi上运行，输出的结果与本工具输出的结果类似。
