@@ -52,6 +52,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 ```
 
 1. **/src/main/java/command**：封装STARTS的六大功能
+   
    - Help 列出STARTS所有的功能：
      - 简单的输出了STARTS的所有功能
      
@@ -74,7 +75,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      - 比较新旧校验和文件获得变更的类型并输出（根据STARTS实现者对diff的定义，这里变更的类型不包括新出现的类型和删除掉的类型）
      
        ```java
-       // 获得变更的类型(不包括删除掉的类型，但是包括新出现的类型)
+       // 获得变更的类型(这里不包括删除掉的类型，但是包括新出现的类型)
        Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
        // 获得新出现的类型
        Map<String, Long> newType=impactedTest.getNewType();
@@ -431,9 +432,205 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 6. **/src/test/java/commandTest**：对/src/main/java/command下实现命令的类的测试
 
-## 3. 使用说明
+## 3. 测试
 
-### 3.1 使用注意事项（规范）
+### 3.1 测试项目-1
+
+#### 3.1.1 环境准备
+
+为了方便将自己实现的starts工具的输出与标准starts工具的输出进行对比，判断正确性，需要在pom.xml中引入surefire和starts的依赖。
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.17</version>
+        </plugin>
+        <plugin>
+            <groupId>edu.illinois</groupId>
+            <artifactId>starts-maven-plugin</artifactId>
+            <version>1.3</version>
+        </plugin>
+    </plugins>
+</build>
+```
+
+#### 3.1.2 项目详情
+
+第一个用来测试的项目的基本版本由以下几部分构成：（见代码/test/test01）
+
+- /src/main/java/Clazz
+
+  - Man类：继承User类
+
+    ```java
+    public class Man extends User {
+        private int id;
+    
+        public Man(){
+            this.id=1;
+            System.out.println("Man");
+        }
+    
+        public int getId() {
+            return id;
+        }
+    }
+    ```
+
+  - User类
+
+    ```java
+    public class User {
+        private int id;
+    
+        public User(){
+            this.id=1;
+            System.out.println("User");
+        }
+    
+        public int getId() {
+            return id;
+        }
+    }
+    ```
+
+- /src/main/java/test
+
+  - TestUser：User类的测试类
+
+    ```java
+    public class TestUser {
+        @Test
+        public void test1(){
+            User user=new User();
+            System.out.println("test01:TestUser");
+        }
+    }
+    ```
+
+  - TestMan：Man类的测试类
+
+    ```java
+    public class TestMan {
+        @Test
+        public void test1() {
+            Man man=new Man();
+            System.out.println("test01:TestMan");
+        }
+    }
+    ```
+
+- /src/test/java目录下的两个测试类与/src/main/java/test，为了方便工具的使用，进行了测试类的复制
+
+#### 3.1.3 测试
+
+**对测试项目的基本版本进行以下修改，判断自己实现的starts工具和标准的starts工具的输出是否一样**
+
+1. 在Clazz包下面增加Woman类，并且在/src/main/test和/src/test/java下面增加对应的测试类（TestWoman）（修改后的代码见/test/test01(改1)）
+
+   ```java
+   public class Woman {
+       private int id;
+   
+       public Woman(){
+           this.id=1;
+           System.out.println("User");
+       }
+   
+       public int getId() {
+           return id;
+       }
+   }
+   ```
+
+   - 这时候使用标准starts工具运行命令输出的结果如下：
+     - diff
+       ![](./img/4.png)
+   - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同。这里impacted不会输出新出现的类型，因为在我们的考量中，认为只有两个版本都存在且发生变化的类型才是变更的类型，而Woman作为新出现的类型，并不会被当作受变更的类型影响的类型。但是在执行select时，新出现的测试总是需要被执行的，所以会输出TestWoman。
+     <img src="./img/5.png" style="zoom:50%;" />
+   - 这时候若将新版本地址作为旧版本代码的地址先输入，旧版本地址作为新版本代码地址后输入。即可以看做代码中删除了Woman和TestWoman，输出如下，符合预期。
+     <img src="./img/6.png" style="zoom:40%;" />
+
+2. 将User的内容改为如下，代码见/test/test01(改2)
+
+   ```java
+   public class User {
+       private int id;
+       private int s=0;
+   
+       public User(){
+           this.id=1;
+           System.out.println("User");
+       }
+   
+       public int getId() {
+           return id;
+       }
+   }
+   ```
+
+   - 这时候使用标准starts工具运行命令输出的结果如下：
+
+     - diff
+
+       ![](./img/diff_user.png)
+
+     - select
+       ![](./img/1.png)
+
+     - starts
+       ![](./img/2.png)
+
+   - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同
+     <img src="./img/3.png" style="zoom:40%;" />
+
+### 3.2 测试项目-2
+
+测试完简单的项目，我们再对一个较为复杂的项目进行测试。
+
+#### 3.2.1 项目详情
+
+项目中一共包含20个类，类之间包含较为复杂的依赖关系。具体如下：
+
+- class1依赖于class2和class8
+- class3依赖于class5和class6
+- class4依赖于class5
+- class6依赖于class10
+- class8依赖于class9和class12
+- class9依赖于class11
+- class10依赖于class14和class20
+- class14依赖于class13和class16
+- class15依赖于class16
+- class17依赖于class18
+- class18依赖于class19
+
+项目中还包含了三个测试Test1、Test2、Test3，Test1测试了class1，Test2测试了class2和class3，Test3测试了class4
+
+#### 3.2.2 测试
+
+对项目分别进行以下修改，进行测试。
+
+1. 修改class2，在class2中增加了`int a;`代码，这时候测试输出如下：<img src="./img/8.png" style="zoom:45%;" />
+   diff输出变更的类型，只有class2发生变更，因此输出class2；impacted输出受变更的类型影响的类型（不仅仅包括测试），class1依赖于class2，test1测试class1，test2测试class2，因此它们都会受到变更的类型class2的影响，所以都会被impacted输出；select则会选择test1和test2。符合预期输出。
+2. 修改class6，在class6中增加了`int a;`代码，这时候测试输出如下：<img src="./img/9.png" style="zoom:45%;" />
+   diff输出变更的类型，只有class6发生变更，因此输出class6；impacted输出受变更的类型影响的类型（不仅仅包括测试），class3依赖于class6，test2测试class3，因此它们都会受到变更的类型class6的影响，所以都会被impacted输出；select则会选择test2。符合预期输出。
+3. 修改class7，在class7中增加了`int a;`代码，这时候测试输出如下：<img src="./img/10.png" style="zoom:45%;" />
+   diff输出变更的类型，只有class7发生变更，因此输出class7；impacted输出受变更的类型影响的类型（不仅仅包括测试），但是class7没有被任何类型所依赖，所以impacted只会输出成lass本身；select则不会选择任何测试。符合预期输出。
+
+以上测试用例均在动态的测试用例选择工具Ekstazi上运行，输出的结果与本工具输出的结果类似。
+
+### 3.3 测试总结
+
+在测试时对相同的测试用例，采用差分测试的方法，将本工具输出的结果与使用人工分析代码依赖得到期望的输出结果以及使用动态测试用例选择工具Ekstazi得到的输出结果进行比较，初步验证了复现的STARTS工具的有效性和正确性。
+
+在执行这些测试用例时，STARTS的执行速度是很快的。这得益于它对代码的静态分析，不需要在代码实际运行时动态的分析类型之间的依赖（这也是相比于Ekstazi存在优势的地方）。当然STARTS执行仍然存在提高的空间，比如原先开发者提到的缓存一些不经常改变的类型的相关jdeps的输出方便后续使用，以提高执行效率。
+
+## 4. 使用说明
+
+### 4.1 使用注意事项（规范）
 
 - 用户的项目中在标记为源码根和测试源码根的目录下都需要写测试类，即用户将测试源码根的目录下的测试类（测试用例）复制到源码根目录下。另外所有的测试类请以“Test”开头，方便jdeps的依赖关系的获取以及surefire插件执行受到代码变更影响的测试用例。示例项目结构如下图：
   ![](./img/7.png)
@@ -452,9 +649,9 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 - 用户必须保存项目的旧版本和新版本，提供新旧版本的绝对路径，以便STARTS进行比较。
 
-### 3.2 使用方法
+### 4.2 使用方法
 
-1. 运行main.java，按照输出的提示输入旧版本项目的绝对路径地址和jar包地址、修改后新版本项目的绝对路径地址和jar包地址。输入完成后就会提示用户STARTS所具有的可以使用的命令，并提示用户继续输入命令。
+1. 导入STARTS项目，运行main.java，按照输出的提示输入旧版本项目的绝对路径地址和jar包地址、修改后新版本项目的绝对路径地址和jar包地址。输入完成后就会提示用户STARTS所具有的可以使用的命令，并提示用户继续输入命令。
 
    ![](./img/runMain.png)
 
