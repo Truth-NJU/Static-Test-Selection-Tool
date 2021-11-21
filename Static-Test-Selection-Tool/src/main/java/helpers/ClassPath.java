@@ -40,14 +40,17 @@ public class ClassPath {
         File[] files = file.listFiles();
         if (files != null) {
             for (File f : files) {
+                // 若是一个目录就继续递归读取目录下的文件
                 if (f.isDirectory()) {
                     getpath(f);
                 } else {
+                    // 截取文件名
                     String path = f.getAbsolutePath();
                     if (path.endsWith(".java")) {
                         String[] temp = path.split("/");
                         String classname = "";
                         classname += temp[temp.length - 1];
+                        // 文件名/类名和绝对路径的映射
                         classpathMap.put(classname.replace(".java", ""), path);
                     }
                 }

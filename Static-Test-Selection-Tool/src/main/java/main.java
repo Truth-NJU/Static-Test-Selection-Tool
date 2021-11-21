@@ -134,6 +134,7 @@ public class main {
                 System.out.println();
                 break;
             } else if (commoand.equals("exit")) {
+                // 重置status为false，方便下一次运行
                 BufferedWriter writer = new BufferedWriter(new FileWriter("status"));
                 writer.write("false");
                 writer.flush();

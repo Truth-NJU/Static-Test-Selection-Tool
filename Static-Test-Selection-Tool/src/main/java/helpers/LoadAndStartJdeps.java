@@ -129,7 +129,6 @@ public final class LoadAndStartJdeps implements StartsConstants {
                 }
             }
             String right = parts[1].trim().split(" ")[0];
-            // TODO 如果right是别的开头，系统类，不是自己写的类
             if(!right.startsWith("java") && !right.startsWith("org")) {
                 if(right.contains(".")) {
                     int maxI = 0;

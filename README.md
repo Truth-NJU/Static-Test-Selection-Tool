@@ -57,7 +57,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      - 简单的输出了STARTS的所有功能
      
    - Diff 显示自上次运行STARTS以来更改的所有Java类型(包括类、接口和枚举)。
-     - 根据旧版项目和新版项目的根路径计算项目的所有类和其校验和的映射关系，并分别写入文件oldCheckSum和newCheckSum
+     - 根据旧版项目和新版项目的根路径计算项目的所有类和其校验和的映射关系，并分别写入文件oldCheckSum和newCheckSum。这时候在项目根路径下就会出现oldCheckSum和newCheckSum这两个文件。
      
        ```java
        // 计算旧版本的校验和并写入文件
@@ -75,7 +75,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      - 比较新旧校验和文件获得变更的类型并输出（根据STARTS实现者对diff的定义，这里变更的类型不包括新出现的类型和删除掉的类型）
      
        ```java
-       // 获得变更的类型(这里不包括删除掉的类型，但是包括新出现的类型)
+       // 获得变更的类型(这里changedType不包括删除掉的类型，但是包括新出现的类型)
        Map<String, Long> changedType = impactedTest.readFileAndCompare(path1, path2);
        // 获得新出现的类型
        Map<String, Long> newType=impactedTest.getNewType();
@@ -178,11 +178,24 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
    - Starts 运行受影响的测试
      - 根据select命令输出的受影响的测试列表生成相应的执行测试的命令并输出
-     - 因为没有实现成插件的形式，所以不能直接在用户的项目中运行测试。而是为用户提供了运行测试的所需要的命令，用户需要在自己的终端或者直接在项目目录下运行命令，观察测试的结果。
+     
+       ```java
+       if (impactedTestList.size() == 0) {
+           System.out.println("没有受影响的测试需要运行");
+           return;
+       }
+       // 运行受影响的测试类
+       System.out.println("请在终端使用以下命令重新运行测试类：");
+       System.out.println("cd " + rootPathNew);
+       for (String impactedTest : impactedTestList) {
+       System.out.println("mvn test -Dtest=" + impactedTest);
+       ```
+     
+     - 因为没有实现成插件的形式，所以不能直接在用户的项目中运行测试。而是为用户提供了运行测试的所需要的命令，用户需要在自己的终端或者直接在项目目录下运行命令，观察测试的结果。输出样例如下：
        ![](./img/starts.png)
      
    - Clean 重新设置STARTS，以便在下一次运行时，认为所有类型都已更改(如果使用starts:starts，则选择所有测试运行)。
-     - 使用了序列化来实现clean的功能。使用一个status文本文件来存储当前STARTS的状态。如果status的内容为true，就代表用户上一次运行STARTS时使用了clean命令。那么这次运行时，STARTS会认为所有的类型都已经更改，需要选取所有测试运行。如果status的内容为false，就代表处于正常的状态，正常运行。
+     - 使用了序列化来实现clean的功能。使用一个status文本文件来存储当前STARTS的状态（status存在项目的根目录下）。如果status的内容为true，就代表用户上一次运行STARTS时使用了clean命令。那么这次运行时，STARTS会认为所有的类型都已经更改，需要选取所有测试运行。如果status的内容为false，就代表处于正常的状态，正常运行。
      
      - 每次用户输入clean命令，会将status的内容改写为true。下一次运行STARTS时，STARTS会认为所有的类型都已经更改，需要选取所有测试运行。
      
@@ -197,7 +210,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 2. **/src/main/java/constants**：定义了各种常量，方便后续的使用
 
 3. **/src/main/java/helpers**：实现了STARTS运行需要的各种工具类和方法
-   - **LoadAndStartJdeps类**：使用jdeps对于给定的jar文件分析该jar文件对应的项目的各个类之间的依赖关系，并以`Map<String, Set<String>>`的形式存储，方便后续的使用
+   - **LoadAndStartJdeps类**：使用jdeps对于给定的jar文件分析该jar文件对应的项目的各个类之间的依赖关系，并以`Map<String, Set<String>>`（类->该类依赖的所有类型）的形式存储，方便后续的使用
    
    - **CreateTDGWithYasgl类**：
      
@@ -264,6 +277,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
            File[] files = file.listFiles();
            if (files != null) {
                for (File f : files) {
+                 // 若是一个目录就继续递归读取目录下的文件
                    if (f.isDirectory()) {
                        getpath(f);
                    } else {
@@ -273,6 +287,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
                            String classname = "";
                          // 截取得到类名
                            classname += temp[temp.length - 1];
+                         // 文件名/类名和绝对路径的映射
                            classpathMap.put(classname.replace(".java", ""), path);
                        }
                    }
@@ -322,6 +337,32 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
      - testTotypeDependency方法：通过测试类或者普通类的名字和jdeps分析得到的依赖构建的TDG图计算该测试类所依赖的所有类型。
      
+       ```java
+       Map<String, Set<String>> res=new HashMap<>();
+       Set<String> set=new HashSet<>();
+       
+       CreateTDGWithYasgl createTDGWithYasgl = new CreateTDGWithYasgl();
+       // 构造TDG图
+       DirectedGraph<String> DirectedGraph = createTDGWithYasgl.makeGraph(deps);
+       // 得到该测试依赖的所有的类型,key代表类型,value代表该测试依赖的所有类型
+       // 这里resDepency.size()=1
+       Map<String, Set<String>> resDepency =
+               createTDGWithYasgl.getTransitiveClosurePerClass(DirectedGraph, Arrays.asList(testName));
+       
+       for (String key : resDepency.keySet()) {
+           for (String val : resDepency.get(key)) {
+               // 得到该类型依赖的类型(不包括它本身)
+               if (!Objects.equals(val, testName)) {
+                   set.add(val);
+               }
+           }
+       }
+       res.put(testName,set);
+       return res;
+       ```
+     
+       使用jdeps分析得到的依赖构建TDG图后，通过该图获得该类型依赖的传递闭包（即该类型依赖的所有类型），将这些类型添加到结果中。
+     
      - typeTotestDependency方法：由于STARTS反转了依赖存储的形式，采用“类型到依赖于该类型的所有测试“的存储方式，所以我们需要对testTotypeDependency方法得到的测试到该测试依赖的类型的映射进行反转，并且通过项目的根路径分析得到项目中所有类型到依赖于该类型的测试的映射关系。
      
        算法核心如下：
@@ -342,7 +383,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
        }
        ```
      
-       遍历每一个测试类，利用testTotypeDependency方法计算得到该测试类依赖的所有的类型（计算得到的resDepency的大小实际上为1）。遍历该测试类依赖的所有的类型，如果用来存放类型到依赖于该类型的所有测试的映射的typeTotestDependencyMap中包含该类型，则将该测试类加入到以该类型为key的value中。
+       遍历每一个测试类，利用testTotypeDependency方法计算得到该测试类依赖的所有的类型（这里计算得到的resDepency的大小实际上为1）。遍历该测试类依赖的所有的类型，如果用来存放类型到依赖于该类型的所有测试的映射的typeTotestDependencyMap中包含该类型，则将该测试类加入到以该类型为key的value中。
      
    - **CheckSum类**：
      
@@ -362,7 +403,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
      - getCheckSum方法：根据文件的路径列表，计算每一个文件的校验和并且存入checkSumMap中。
      
-     - setCheckSumMap方法：计算一个项目中所有类型（除去测试类）和对应校验和的映射
+     - setCheckSumMap方法：计算一个项目中所有类型（除去测试类）和对应校验和的映射，存储在checkSumMap中。
      
        ```java
        ClassPath classPath = new ClassPath();
@@ -549,7 +590,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
    - 这时候使用标准starts工具运行命令输出的结果如下：
      - diff
        ![](./img/4.png)
-   - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同。这里impacted不会输出新出现的类型，因为在我们的考量中，认为只有两个版本都存在且发生变化的类型才是变更的类型，而Woman作为新出现的类型，并不会被当作受变更的类型影响的类型。但是在执行select时，新出现的测试总是需要被执行的，所以会输出TestWoman。
+   - 使用自己实现的starts工具的输出如下，与标准starts工具输出的类相同。这里impacted不会输出新出现的类型，因为在我们的考量中，认为只有两个版本都存在且发生变化的类型才是变更的类型，而Woman作为新出现的类型，并不会被当作受变更的类型影响的类型。但是在执行select时，新出现的测试总是需要被执行的，所以会输出TestWoman。is
      <img src="./img/5.png" style="zoom:50%;" />
    - 这时候若将新版本地址作为旧版本代码的地址先输入，旧版本地址作为新版本代码地址后输入。即可以看做代码中删除了Woman和TestWoman，输出如下，符合预期。
      <img src="./img/6.png" style="zoom:40%;" />
@@ -614,7 +655,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 对项目分别进行以下修改，进行测试。
 
 1. 修改class2，在class2中增加了`int a;`代码，这时候测试输出如下：（代码见/test/test04 (改1)）<img src="./img/8.png" style="zoom:45%;" />
-   diff输出变更的类型，只有class2发生变更，因此输出class2；impacted输出受变更的类型影响的类型（不仅仅包括测试），class1依赖于class2，test1测试class1，test2测试class2，因此它们都会受到变更的类型class2的影响，所以都会被impacted输出；select则会选择test1和test2。符合预期输出。
+   diff输出变更的类型，只有class2发生变更，因此输出class2；impacted输出受变更的类型影响的类型（不仅仅包括测试），class1依赖于class2，test1测试class1，test2测试class2，因此它们都会受到变更的类型class2的影响，所i以都会被impacted输出；select则会选择test1和test2。符合预期输出。
 2. 修改class6，在class6中增加了`int a;`代码，这时候测试输出如下：（代码见/test/test04 (改2)）<img src="./img/9.png" style="zoom:45%;" />
    diff输出变更的类型，只有class6发生变更，因此输出class6；impacted输出受变更的类型影响的类型（不仅仅包括测试），class3依赖于class6，test2测试class3，因此它们都会受到变更的类型class6的影响，所以都会被impacted输出；select则会选择test2。符合预期输出。
 3. 修改class7，在class7中增加了`int a;`代码，这时候测试输出如下：（代码见/test/test04 (改3)）<img src="./img/10.png" style="zoom:45%;" />
@@ -632,10 +673,10 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 ### 4.1 使用注意事项（规范）
 
-- 用户的项目中在标记为源码根和测试源码根的目录下都需要写测试类，即用户将测试源码根的目录下的测试类（测试用例）复制到源码根目录下。另外所有的测试类请以“Test”开头，方便jdeps的依赖关系的获取以及surefire插件执行受到代码变更影响的测试用例。示例项目结构如下图：
+- 用户的项目中在标记为源码根和测试源码根的目录下都需要写测试类，即用户需要将测试源码根的目录下的测试类（测试用例）复制到源码根目录下。另外所有的测试类请以“Test”开头，方便jdeps的依赖关系的获取以及surefire插件执行受到代码变更影响的测试用例。示例项目结构如下图：
   ![](./img/7.png)
 
-- 由于没有实现成插件的形式，所以需要使用者们自己使用命令进入修改后的代码的目录，再使用`mvn test -Dtest=类名`运行受影响的测试。用户需要在他们的项目中引入surefire插件的maven依赖，在pom.xml中加入如下依赖：
+- 由于没有实现成插件的形式，所以需要使用者们自己使用命令进入修改后的代码的目录，再使用`mvn test -Dtest=类名`运行受影响的测试。用户需要在他们待测试的项目中引入surefire插件的maven依赖，在pom.xml中加入如下依赖：
 
   ```xml
   <plugin>  
@@ -645,9 +686,9 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
   </plugin> 
   ```
 
-- 用户需要确保电脑中的mvn命令是可用的
+- 执行受影响的测试时需要使用到mvn命令，因此用户需要确保电脑中的mvn命令是可用的
 
-- 用户必须保存项目的旧版本和新版本，提供新旧版本的绝对路径，以便STARTS进行比较。
+- 用户必须保存项目的旧版本和新版本，提供新旧版本的项目绝对路径以及项目jar包的绝对路径，以便STARTS进行分析和比较。
 
 ### 4.2 使用方法
 
