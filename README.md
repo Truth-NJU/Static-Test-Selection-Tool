@@ -38,6 +38,11 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
    - STARTS按前面描述的方式计算要运行的选定测试集，然后STARTS会使用Maven Surefire插件来运行测试时，Surefire将只运行受更改影响的测试。（因为没有实现成插件的形式，所以不能直接在用户的项目中运行测试。而是为用户提供了运行测试的所需要的命令，用户需要在自己的终端或者直接在项目目录下运行命令，观察测试的结果。）
    - 目标starts:starts将执行前面的所有步骤，以查找更改的类型、选择受影响的测试并运行那些选定的测试。
 
+### 1.5 工具的创新点和优点
+
+1. STARTS是基于类防火墙的类级静态回归测试用例选择工具。相比粗粒度和细粒度的测试选择技术来说，类级测试选择技术效果最优。STARTS能够通过静态分析较为精准的选取测试用例，也不会增加太多测试运行阶段的开销。
+2. 由于静态分析固有的不精确性，与Ekstazi相比，STARTS发现了更多的测试依赖项，而且许多测试共享了很多这些依赖项。因此，在STARTS中反转了依赖项存储格式，通过存储类型到依赖于该类型的测试的映射来减少对测试依赖项的重复检查。 同时也极大的提高了选择受影响测试的性能，相比于Ekstazi工具运行分析的速度更快。
+
 ## 2. 模块构成
 
 代码共分为6个模块
@@ -57,7 +62,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      - 简单的输出了STARTS的所有功能
      
    - Diff 显示自上次运行STARTS以来更改的所有Java类型(包括类、接口和枚举)。
-     - 根据旧版项目和新版项目的根路径计算项目的所有类和其校验和的映射关系，并分别写入文件oldCheckSum和newCheckSum。这时候在项目根路径下就会出现oldCheckSum和newCheckSum这两个文件。
+     - 根据旧版项目和新版项目的根路径计算项目的所有类和其校验和的映射关系，并分别写入文件oldCheckSum和newCheckSum（调用CheckSum类的方法）。这时候在项目根路径下就会出现oldCheckSum和newCheckSum这两个文件。
      
        ```java
        // 计算旧版本的校验和并写入文件
@@ -72,7 +77,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
        checkSum.writeCheckSumToFile(resMapNew, "newCheckSum");
        ```
      
-     - 比较新旧校验和文件获得变更的类型并输出（根据STARTS实现者对diff的定义，这里变更的类型不包括新出现的类型和删除掉的类型）
+     - 比较新旧校验和文件获得变更的类型并输出（根据STARTS实现者对diff的定义，这里变更的类型不包括新出现的类型和删除掉的类型）（调用ImpactedTest类的方法）
      
        ```java
        // 获得变更的类型(这里changedType不包括删除掉的类型，但是包括新出现的类型)
@@ -92,7 +97,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
    - Impacted 显示所有受变更影响的类型(不仅仅是测试类)。
      - 使用和Diff类似的步骤获得变更的类型
      
-     - 获得项目中所有不是测试类的类名，存在commonTypeClass中。
+     - 获得项目中所有不是测试类的类名，存在commonTypeClass中。（调用ClassPath类的方法）
      
        ```java
        ClassPath classPath = new ClassPath();
@@ -335,7 +340,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
    - **ComputeDepency类**：
      
-     - testTotypeDependency方法：通过测试类或者普通类的名字和jdeps分析得到的依赖构建的TDG图计算该测试类所依赖的所有类型。
+     - testTotypeDependency方法：通过测试类或者普通类的名字和jdeps分析得到的依赖构建的TDG图（调用CreateTDGWithYasgl类实现）计算该测试类所依赖的所有类型。
      
        ```java
        Map<String, Set<String>> res=new HashMap<>();
@@ -403,7 +408,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
      - getCheckSum方法：根据文件的路径列表，计算每一个文件的校验和并且存入checkSumMap中。
      
-     - setCheckSumMap方法：计算一个项目中所有类型（除去测试类）和对应校验和的映射，存储在checkSumMap中。
+     - setCheckSumMap方法：调用ClassPath的方法获得项目中的所有类型，然后使用getSingleCheckSum方法一次计算项目中所有类型（除去测试类）和对应校验和的映射，存储在checkSumMap中。
      
        ```java
        ClassPath classPath = new ClassPath();
@@ -431,7 +436,8 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
      - writeCheckSumToFile方法：将计算得到的校验和写入文件
      
-   - ImpactedTest类：
+   - **ImpactedTest类**：
+     
      - readFileAndCompare方法：比较新旧校验和文件，找出已更改的类型
      
        - 首先读取新、旧校验和文件存入map中（map存放的形式是类名和该类校验和的映射）。这里以读取新校验和文件存入map为例：
@@ -453,7 +459,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
        - 逐项比较两个存储校验和的map（newCheckSum、oldCheckSum），得到变更的类型、新出现的类型和删除的类型
      
-     - findImpactedTest方法：根据已更改的类型和项目中所有类型到依赖于该类型的测试的映射关系找到受影响的测试
+     - findImpactedTest方法：调用ComputeDepency类的typeTotestDependencyMap方法获得项目中类型到依赖于该类型的测试的映射关系，根据已更改的类型和项目中所有类型到依赖于该类型的测试的映射关系找到受影响的测试
      
        ```java
        ArrayList<String> impactedTest = new ArrayList<>();
@@ -673,7 +679,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 STARTS运行讲解视频见[STARTS运行视频](https://www.bilibili.com/video/BV193411t7kb/)
 
-### 4.1 使用注意事项（规范）
+### 4.1 使用注意事项（项目规范）
 
 - 用户的项目中在标记为源码根和测试源码根的目录下都需要写测试类，即用户需要将测试源码根的目录下的测试类（测试用例）复制到源码根目录下。另外所有的测试类请以“Test”开头，方便jdeps的依赖关系的获取以及surefire插件执行受到代码变更影响的测试用例。示例项目结构如下图：
   ![](./img/7.png)
@@ -694,7 +700,7 @@ STARTS运行讲解视频见[STARTS运行视频](https://www.bilibili.com/video/B
 
 ### 4.2 使用方法
 
-1. 导入STARTS项目，运行main.java，按照输出的提示输入旧版本项目的绝对路径地址和jar包地址、修改后新版本项目的绝对路径地址和jar包地址。输入完成后就会提示用户STARTS所具有的可以使用的命令，并提示用户继续输入命令。
+1. 导入STARTS项目，运行main.java，按照输出的提示输入旧版本项目的绝对路径地址和jar包地址、修改后新版本项目的绝对路径地址和jar包地址。输入完成后就会提示用户STARTS所具有的可以使用的命令，并提示用户继续输入命令。到这里STARTS已经成功运行起来了，接下去我们来使用STARTS的具体功能。
 
    ![](./img/runMain.png)
 
@@ -717,7 +723,7 @@ STARTS运行讲解视频见[STARTS运行视频](https://www.bilibili.com/video/B
 6. 输入starts命令会提示用户运行受影响的测试所需要的命令
    ![](./img/starts.png)
 
-   - 此时进入终端按照上述命令执行会得到如下结果，可以借此来判断用例是否执行成功，以及代码的变更是否对某些功能造成影响
+   - 此时用户进入终端按照上述命令执行会得到如下结果，可以借此来判断用例是否执行成功，以及代码的变更是否对某些功能造成影响
       ![](./img/starts-1.png)
    
       ![](./img/starts-2.png)
