@@ -408,7 +408,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
      
      - getCheckSum方法：根据文件的路径列表，计算每一个文件的校验和并且存入checkSumMap中。
      
-     - setCheckSumMap方法：调用ClassPath的方法获得项目中的所有类型，然后使用getSingleCheckSum方法一次计算项目中所有类型（除去测试类）和对应校验和的映射，存储在checkSumMap中。
+     - setCheckSumMap方法：调用ClassPath的方法获得项目中的所有类型，然后使用getSingleCheckSum方法依次计算项目中所有类型（除去测试类）和对应校验和的映射，存储在checkSumMap中。
      
        ```java
        ClassPath classPath = new ClassPath();
