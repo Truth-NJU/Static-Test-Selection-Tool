@@ -671,7 +671,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 ## 4. 使用说明
 
-STARTS运行视频见项目目录下的**STARTS运行视频.mp4**
+STARTS运行讲解视频见[STARTS运行视频](https://www.bilibili.com/video/BV193411t7kb/)
 
 ### 4.1 使用注意事项（规范）
 
