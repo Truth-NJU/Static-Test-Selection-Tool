@@ -45,7 +45,7 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 
 ## 2. 模块构成
 
-代码共分为6个模块
+代码共分为6个模块（代码存放在/Static-Test-Selection-Tool目录下）
 
 ```java
 /src/main/java/command
@@ -480,6 +480,8 @@ STARTS是一个静态测试选择工具，它在没有实际执行程序的情�
 6. **/src/test/java/commandTest**：对/src/main/java/command下实现命令的类的测试
 
 ## 3. 测试
+
+测试使用的存放在/test目录下
 
 ### 3.1 测试项目-1
 
