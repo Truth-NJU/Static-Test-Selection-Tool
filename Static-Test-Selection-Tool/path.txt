@@ -1,6 +1,9 @@
 /Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01
 /Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01/out/artifacts/test01_jar/test01.jar
 
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01-2
+/Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01-2/out/artifacts/test01_2_jar/test01-2.jar
+
 /Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01(改1)
 /Users/taozehua/Downloads/大三上学习资料/自动化测试/工具实现/test/test01(改1)/out/artifacts/test03_jar/test03.jar
 
