@@ -6,16 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8dfacad-a1ac-45b6-b0e6-cfee7595938f" name="默认更改列表" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newCheckSum" beforeDir="false" afterPath="$PROJECT_DIR$/newCheckSum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oldCheckSum" beforeDir="false" afterPath="$PROJECT_DIR$/oldCheckSum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/CheckSum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/CheckSum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/ComputeDepency.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/ComputeDepency.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/ImpactedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/ImpactedTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/LoadAndStartJdeps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/LoadAndStartJdeps.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main.java" afterDir="false" />
-    </list>
+    <list default="true" id="a8dfacad-a1ac-45b6-b0e6-cfee7595938f" name="默认更改列表" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,6 +205,7 @@
       <workItem from="1638008899824" duration="61000" />
       <workItem from="1638150711524" duration="62000" />
       <workItem from="1638150787917" duration="1056000" />
+      <workItem from="1638152558781" duration="8000" />
     </task>
     <servers />
   </component>

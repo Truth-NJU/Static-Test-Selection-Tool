@@ -2,6 +2,8 @@
 
 复现静态测试选择工具STARTS，STARTS是一个类级的静态回归测试用例选择工具。
 
+**STARTS运行讲解视频见[STARTS运行视频](https://www.bilibili.com/video/BV193411t7kb/)**
+
 ## 1.工具介绍
 
 ### 1.1 基础知识
