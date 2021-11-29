@@ -80,6 +80,7 @@ public class ComputeDepency {
             Map<String, Set<String>> resDepency=testTotypeDependency(test,deps);
             for (String key : resDepency.keySet()) {
                 for (String val : resDepency.get(key)) {
+                    // 若key包含该测试依赖的类型
                     if(typeTotestDependencyMap.containsKey(val)) {
                         // 将依赖于该类型的测试放到typeTotestDependencyMap中
                         typeTotestDependencyMap.get(val).add(key);

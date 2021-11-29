@@ -107,6 +107,7 @@ public class CheckSum implements StartsConstants {
             // 如果类名包含.，代表类名包含包的名字，就要进行截取。
             // 截取最后一部分，获得类名
             if (key.contains(".")) {
+                // 获得最后一个.的位置
                 int maxI = 0;
                 for (int i = 0; i < key.length(); i++) {
                     if (key.charAt(i) == '.') {
@@ -114,6 +115,7 @@ public class CheckSum implements StartsConstants {
                     }
                 }
                 String keyRes = "";
+                // 截取类名
                 for (int i = maxI + 1; i < key.length(); i++) {
                     keyRes += key.charAt(i);
                 }

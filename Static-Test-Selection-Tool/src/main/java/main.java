@@ -7,6 +7,7 @@ import java.util.*;
 
 public class main {
     public static void main(String[] args) throws Exception {
+        // 读取输入
         System.out.println("欢迎使用Starts工具");
         System.out.println("> 请输入旧版本项目的绝对路径地址：");
         BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
@@ -22,6 +23,7 @@ public class main {
         String jarPathNew = br4.readLine();
         // 获得所有的类型和依赖于这些类型的测试的映射
         Map<String, Set<String>> typeTotestDependencyMap = getTypeToTestMap(rootPathNew, jarPathNew);
+        // 输出提示信息
         String out = "STARTS工具提供了以下七种命令，请选择：" + "\n" +
                 "-help: 列出STARTS所有功能" + "\n" + "-diff: 显示自上次运行STARTS以来更改的所有Java类型(包括类、接口和枚举)"
                 + "\n" + "-impacted: 显示所有受变更影响的类型(不仅仅是测试类)" + "\n"
@@ -39,6 +41,7 @@ public class main {
             System.out.print("> ");
             BufferedReader br5 = new BufferedReader(new InputStreamReader(System.in));
             String commoand = br5.readLine();
+            // 分别处理命令
             if (commoand.equals("help")) {
                 Help help = new Help();
                 help.allPurpose();

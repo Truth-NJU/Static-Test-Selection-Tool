@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class ImpactedTest {
 
-    // 变更的类型（包括新出现的类型）
+    // 变更的类型（这里包括新出现的类型，后续使用可能需要剔除掉）
     private Map<String, Long> changedType = new HashMap<>();
 
     // 新出现的类型
@@ -66,6 +66,7 @@ public class ImpactedTest {
         bufferedReader1.close();
 
 
+        // 逐项比较校验和文件
         for (String key : newCheckSum.keySet()) {
             // 该类型之前有
             if (oldCheckSum.containsKey(key)) {

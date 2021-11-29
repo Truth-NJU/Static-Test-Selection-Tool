@@ -126,6 +126,7 @@ public final class LoadAndStartJdeps implements StartsConstants {
                     clazz += parts[0].trim().charAt(i);
                 }
             }
+            // 过滤不需要的类
             String right = parts[1].trim().split(" ")[0];
             if(!right.startsWith("java") && !right.startsWith("org")) {
                 if(right.contains(".")) {

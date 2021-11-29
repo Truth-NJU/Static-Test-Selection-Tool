@@ -6,7 +6,16 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8dfacad-a1ac-45b6-b0e6-cfee7595938f" name="默认更改列表" comment="" />
+    <list default="true" id="a8dfacad-a1ac-45b6-b0e6-cfee7595938f" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newCheckSum" beforeDir="false" afterPath="$PROJECT_DIR$/newCheckSum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/oldCheckSum" beforeDir="false" afterPath="$PROJECT_DIR$/oldCheckSum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/CheckSum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/CheckSum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/ComputeDepency.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/ComputeDepency.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/ImpactedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/ImpactedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/helpers/LoadAndStartJdeps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/helpers/LoadAndStartJdeps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +57,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test/test01-2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -203,6 +212,8 @@
       <workItem from="1637477402545" duration="249000" />
       <workItem from="1637666328437" duration="6269000" />
       <workItem from="1638008899824" duration="61000" />
+      <workItem from="1638150711524" duration="62000" />
+      <workItem from="1638150787917" duration="1056000" />
     </task>
     <servers />
   </component>
@@ -221,16 +232,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/helpers/ImpactedTest.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
